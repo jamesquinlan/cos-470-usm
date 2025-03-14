@@ -178,8 +178,8 @@ For a dataset with inputs \( x_i \) and corresponding labels \( y_i \), where \(
 \[
 y_i (w^T x_i + b) > 0
 \]
-If \( y_i = +1 \) (positive class), then \( w^T x_i + b > 0 \).
-If \( y_i = -1 \) (negative class), then \( w^T x_i + b < 0 \).
+If \( x \) is negative, we take \( y = -1 \), making the equation \( w^T x + b > 0 \).  
+If \( x \) is positive, we take \( y = +1 \), which also makes \( w^T x + b > 0 \).
 
 
 \section{Perceptron Algorithm}
