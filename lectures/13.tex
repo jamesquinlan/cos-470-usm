@@ -21,6 +21,8 @@ f(\alpha) = \sum\limits_{i=1}^{n} \alpha_i - \frac{1}{2} \sum\limits_{i=1}^{n} \
 
 The last term in this expression, $x_i^T x_j$, can be separated from the rest of the expression using \textbf{kernelization}. This process adds dimensionality that allows non-linearly separable data to be separated by a plane. For now, we will avoid using this method, but it's good to know.
 
+\textbf{Kernelization} is a technique in SVM that uses kernel functions to transform data that can't be separated by a straight line into a higher dimensional space where a straight line can separate it.
+
 Using purely algebra, we can simplify equation 1 a bit. Let's take a closer look at the second term in our equation. This is what it looks like if we have a vector with three components:
 
 \[
@@ -170,6 +172,8 @@ Q \alpha = 1 \implies \alpha = Q^{-1} \cdot 1
 \]
 
 But here's our issue: we don't know what $Q$ is. Additionally, taking the inverse of a matrix is a difficult calculation that's in $O(n^3)$ and the results of such an operation are numerically unstable and untrustworthy. Therefore, this \textbf{direct solution} only works theoretically. Let's move on to try the \textbf{indirect} or \textbf{iterative method}.
+
+\textbf{More on Matrices:} When you have a bloated matrix or a matrix that is poorly conditioned. Direct optimization can actually lead to numerical instability. This is important as it is not uncommon in real world data sets. 
 
 The iterative method is defined by the \textbf{update rule}:
 
