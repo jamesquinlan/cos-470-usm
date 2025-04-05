@@ -21,30 +21,33 @@ Consider the following.
 
 \begin{enumerate}
     \item Given $[a,b] \rightarrow [0,1]$ our objective is to map $a \rightarrow 0$ and $b \rightarrow 1$
-    
-    \begin{align*}
-       x&=\frac{1}{b-a}(x-a) \\
-        &=\frac{1}{b-a}x-\frac{a}{b-a}
-    \end{align*}
 
-    \begin{center}
-    \begin{tikzpicture}
-        % Draw the line from a to b
-        \draw[-] (0,0) -- (4,0) node[midway, above] {$\frac{a+b}{2}$};
-        % Add labels for a and b
-        \node at (0,0) [below] {a};
-        \node at (4,0) [below] {b};
-    \end{tikzpicture}
-    \end{center}
+    \[
+        \begin{array}{rl}
+            x &= \dfrac{1}{b-a}(x-a) \\\\
+            &= \dfrac{1}{b-a}x - \dfrac{a}{b-a}
+            \hspace{10em}
+            \quad
+            % Interval diagram
+            \begin{tikzpicture}[baseline]
+                % Draw the line
+                \draw[-] (0,0) -- (4,0);
+                % Draw the 3 ticks
+                \foreach \i in {0,2,4} {
+                    \draw[thick] (\i,0.1) -- (\i,-0.1);
+                }
+                % Draw the values under the ticks
+                \node at (0,0) [below] {$a$};
+                \node at (2,0) [below] {$\frac{a+b}{2}$};
+                \node at (4,0) [below] {$b$};
+            \end{tikzpicture} \\
 
-    \begin{center}
-        \begin{align*}
-        &=\frac{1}{b-a}(\frac{a+b}{2})-\frac{2a}{2(b-a)} \\
-        &=\frac{a+b-2a}{2(b-a)} \\
-        &=\frac{b-a}{2(b-a)} \\
-        &=\frac{1}{2}
-        \end{align*}
-    \end{center}
+            &= \dfrac{1}{b-a}\left(\dfrac{a+b}{2}\right) - \dfrac{2a}{2(b-a)} \\\\
+            &= \dfrac{a+b - 2a}{2(b-a)} \\\\
+            &= \dfrac{b-a}{2(b-a)} \\\\
+            &= \dfrac{1}{2}
+        \end{array}
+    \]
 
     Check the formula by testing with $0,\frac{1}{2},1$, which make up the bounds and the midpoint. 
     
@@ -73,21 +76,21 @@ $argmax_{j=[1,2]}$ $[5,3]=1$
 
 % ----------------------------------------------------------------
 
-\section{Code in Juila}
+\section{Code in Julia}
 The following is code written in Julia 1.10.4. 
 It is represeting a kNN algorithm on the Iris dataset.
 
 \begin{lstlisting}
-using pkg
-usign Distances
+using Pkg
+using Distances
 using RDataSets
 using MLJBase
-pkg.add("statsBase")
+Pkg.add("StatsBase")
 using StatsBase
 
 iris=dataset("datasets","Iris")
-x = Matrix(iris[:,1:4]'
-y=@.ifelse(iris.speies=="setosa",1,-1)
+x = Matrix(iris[:,1:4])
+y=@.ifelse(iris.species=="setosa",1,-1)
 c = unique(y)
 c[argmax(map(i->sum(y.==c[i]),1:lastindex(c)))]
 mode(y)
@@ -96,7 +99,7 @@ mode(y)
 function kNN(X,x,y,k,d = Euclidean())
     n-size(X,2)
     distances = map(i-> d(x,X[:,i]), 1:n)
-    indeices = partialsortperm(distances,1:k)
+    indices = partialsortperm(distances,1:k)
     if typeof(y) == Vector{union{Float32,Float64}}
         yhat = mean(y[indices])
     else
@@ -106,13 +109,13 @@ function kNN(X,x,y,k,d = Euclidean())
 end
 
 #Metrics
-accuracy = sum(yhat.==ytest/length(ytest)
+accuracy = sum(yhat.==ytest/length(ytest))
 precsion = sum ((yhat.==1.&(ytest.==1)))/sum(yhat.==1)
 recall = sum((yhat.==1.&(ytest.==1)))/sum(ytest.==1)
 specircity = sum((yhat.==-1).&(ytest.==-1))/sum(ytest.==-1)
 f1 = 2*[precsion * recall / (precision + recall)
 Distances.Hamming()(ytest,yhat)
-train, test = parition(1:size(X,2),0.7,shuffle=true)
+train, test = partition(1:size(X,2),0.7,shuffle=true)
 
     Xtrain = X[:,train]
     Xtest = X[:test]
@@ -125,7 +128,7 @@ yhat = map(i->kNN(Xtrain,Xtest[:,i],ytrain,1)1:size(Xtest,2))
 
 The following is some code about setting a random seed
 \begin{lstlisting}
-pkg.add("random")
+Pkg.add("random")
 using Random
 Random.seed!(123) #Where 123 is the seed
 \end{lstlisting}
