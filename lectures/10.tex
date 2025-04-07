@@ -1,158 +1,210 @@
 %+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-% SUMMARY    : Optimization & SVMs -- Class Notes and Lecture on deriving the Loss function 
-%            : for the support vector machine for maximizing margin.
+% SUMMARY    : Support Vectors and Multi-variable Calculus 
 %            : University of Southern Maine 
 %            : @james.quinlan
-%            : @abdirahman.mohamed, Wyatt McCurdy
+%            : SJ Franklin  - Lecture 10
 %+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-\documentclass[11pt]{article}
-\usepackage{amsmath, amssymb, amsthm}
-\usepackage{fullpage}
-\usepackage{enumitem} % for outlining
-\usepackage{tcolorbox} % for colored boxes
-
-\title{Optimization \& SVMs -- Class Notes}
-\author{[Abdirahman Mohamed, Wyatt McCurdy]}
-\date{}
-
-\begin{document}
-\maketitle
-
 \section*{Objectives}
-\begin{outline}
-    \1 Understand monotonic functions and their properties.
-    \1 Learn the formulation of SVMs through maximum margin optimization.
-    \1 Study Lagrange multipliers in constrained optimization.
-    \1 Explore gradients, partial derivatives, and various gradient descent methods.
-    \1 Understand the primal problem (objective function) of SVMs.
-    \1 Understand the dual problem using Lagrange multipliers.
-    \1 Practice computing the gradient.
-\end{outline}
+\begin{itemize}
+    \item Understand SVM margin and importance
+    \item Learn SVM objective function
+    \item Role of support vectors in SVM
+    \item Lagrange multipliers in SVM
+    \item Gradient descent optimization methods
+\end{itemize}
+
 
 \rule[0.0051in]{\textwidth}{0.00025in}
 % ----------------------------------------------------------------
 
-\section{Mathematics and SVM Optimization}
+\section{Review}
+\subsection{SVM Margins}
 
-\subsection{Monotonic Functions}
+In the context of Support Vector Machines (SVMs), the margin refers to the distance between the hyperplane and the closest data points from each class. These closest data points are called \textit{support vectors}, and they are critical in determining the optimal decision boundary.
+
+For a binary classification problem, the goal of an SVM is to find the hyperplane that maximizes this margin, ensuring the greatest possible separation between the two classes. A larger margin typically leads to better generalization and reduced risk of overfitting, as it implies a more confident separation of the classes.
+
+\subsection{Objective Function}
+
+Mathematically, the margin can be expressed as:
+\[
+\text{Margin} = \frac{1}{\| \mathbf{w} \|}
+\]
+
+where \( \mathbf{w} \) is the weight vector normal to the hyperplane. The margin is inversely proportional to the magnitude of \( \mathbf{w} \), meaning that to maximize the margin, we need to minimize \( \| \mathbf{w} \| \). This is achieved by finding the hyperplane that satisfies the optimal separation between the two classes while keeping the margin as large as possible. 
+
+Note that while this is not the same as minimizing the vector \( \mathbf{w} \), the \textit{argmax} of \( \frac{1}{\| \mathbf{w} \|} \) is the same as the \textit{argmin} of \( \| \mathbf{w} \| \). For instance, if you have:
+
+\[
+\max(\frac{1}{10}, \frac{1}{20}, \frac{1}{30}), \quad \min(10, 20, 30)
+\]
+
+then the \textit{argmax} of \( \max(\frac{1}{10}, \frac{1}{20}, \frac{1}{30}) \) is the index of the maximum value, and the \textit{argmin} of \( \min(10, 20, 30) \) is the index of the minimum value. 
+
+Therefore, the \textit{argmax} and \textit{argmin} refer to the positions where the maximum and minimum values occur, respectively.
+
+\section{Objective Function and Constraints}
+
+The objective function in SVM is to minimize the squared Euclidean norm of the weight vector \( \mathbf{w} \):
+\[
+\min \frac{1}{2} \| \mathbf{w} \|^2
+\]
+The factor of \( \frac{1}{2} \) is introduced for convenience, as it simplifies the derivative calculations. This is a differentiable function, which allows us to apply optimization techniques like gradient descent.
+
+In SVM, the optimization problem is subject to the following constraint:
+\[
+y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1, \quad \forall i
+\]
+where \( y_i \) is the class label (either 1 or -1), \( \mathbf{x}_i \) is the feature vector, and \( b \) is the bias term.
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[scale=1.25]
+\newcommand{\pointsize}{3.0pt} % Define a variable for point size
+\foreach \x/\y/\c in {
+    0.5/0.5/-1,
+    1/1/-1,
+    1/1.5/-1,
+    1.6125/1.15/-1, % sv - NOTE: 1.6125 should be 1.5, however had to adjust to make figure look correct
+    0.5/2/-1,
+    1.1667/2.5/-1, % sv -
+    3.5/2/1, % sv +
+    4.5/0.5/1,
+    4/1.5/1,
+    5/1/1,
+    4.5/2/1,
+    4/3/1
+}
+{
+    \ifnum\c=-1
+        \node at (\x,\y) [circle, draw, inner sep=\pointsize] {};
+    \else
+        \node at (\x,\y) [circle, fill, inner sep=\pointsize] {};
+    \fi
+}
+
+% labels for support vectors
+\node at (2,3.5) {\textsf{Support Vectors}};
+\draw[dotted, -latex] (2,3.4) -- (1.3,2.55);
+\draw[dotted, -latex] (2,3.4) -- (3.4,2.125);
+\draw[dotted, -latex] (2,3.4) -- (1.65,1.25);
+
+% margins
+\draw[dotted] (1.92,0.25) -- (2.9,0.576);
+\node at (2.5,0.2) {$\delta$};
+\draw[dotted] (3.867,0.8989) -- (2.9,0.576);
+\node at (3.5,0.5) {$\delta$};
+
+% Hyperplane
+% y = -3x + 6
+\draw[thick] (1,3) -- (2,0); % \node[right] at (3, -0.25) {${\bf w}^{\T} {\bf x} + b = 0 $};
+
+% y = -3x + 9.25
+\draw[dashed, thick] (3.08, 0) -- (2.0625, 3.0625);
+
+% y = -3x + 12.5
+\draw[thick] (3.125,3.125) -- (4.1666,0); %
+\end{tikzpicture}
+    \caption{The dashed line is the optimal hyperplane with maximum margins on either side defined by the support vectors.}
+    \label{fig:maxmargin-svm}
+\end{figure}
+
+\section{Weighted Sum of Support Vectors}
+
+The support vectors are the points that lie closest to the margin boundaries. The weight vector \( \mathbf{w} \) is a linear combination of these support vectors:
+\[
+\mathbf{w} = c_1 \mathbf{x}_1 + c_2 \mathbf{x}_2 + \cdots + c_k \mathbf{x}_k
+\]
+where \( \mathbf{x}_1, \mathbf{x}_2, \dots, \mathbf{x}_k \) are the support vectors, and \( c_1, c_2, \dots, c_k \) are coefficients associated with each support vector. 
+
+Additionally, the constant coefficients \( c_1, c_2, \dots, c_k \) represent the relative importance of each support vector in the formation of the hyperplane. For example, if a support vector has a larger \( c_k \), it has a greater influence on the orientation of the hyperplane. On the other hand, say for instance that a support vector is an outlier, meaning it is far away from the decision boundary, then it follows that its corresponding \( c_k \) value may be small and have less influence on the orientation of the hyperplane.
+
+\section{Lagrange Multipliers and Optimization Constraints}
+
+To incorporate the constraints into the objective function, we use Lagrange multipliers.
+
+\[
+y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1
+\]
+
+First, subtract 1 from both sides:
+
+\[
+y_i (\mathbf{w}^T \mathbf{x}_i + b) - 1 \geq 0
+\]
+
+Next, introduce a Lagrange multiplier \( \alpha_i \) for each data point \( x_i \). The Lagrange multiplier enforces the constraint during the optimization process, ensuring that the constraint is met for the support vectors. Thus, we write the Lagrange term as:
+
+\[
+\alpha_i \left( y_i (\mathbf{w}^T \mathbf{x}_i + b) - 1 \right) = 0
+\]
+
+Now, we can write the objective function to be minimized. The original objective function in SVM is to minimize the squared Euclidean norm of the weight vector:
+
+\[
+\min \frac{1}{2} \| \mathbf{w} \|^2
+\]
+
+To incorporate the constraint using Lagrange multipliers, we combine the objective function with the Lagrange multiplier terms. This leads to the Lagrangian:
+
+\[
+L = \min \frac{1}{2} \| \mathbf{w} \|^2 - \sum \alpha_i \left( y_i (\mathbf{w}^T \mathbf{x}_i + b) - 1 \right)
+\]
+
+The key property of the Lagrange multipliers is that most of them turn out to be zero. This is because only the support vectors contribute to the weight vector w, making the corresponding multipliers for non-support vectors zero and minimizing their influence on the optimization process.
+
+When discussing the constraint, it's important to recognize that the sign of the expression \( y_i (\mathbf{w}^T \mathbf{x}_i + b) \) ensures that the data points are classified correctly. Specifically, if \( (\mathbf{w}^T \mathbf{x}_i + b) \) is positive and the label \( y_i \) is also positive, the product will be positive, which indicates that the point is correctly classified on the positive side of the margin. Similarly, if \( (\mathbf{w}^T \mathbf{x}_i + b) \) is negative and \( y_i \) is negative, the product will be positive, confirming the point is on the negative side of the margin. This relationship ensures that each data point is on the correct side of the margin boundary. The critical point here is that the margin must always be non-zero, i.e. there needs to be some "space" between the support vectors and the hyperplane to maintain proper separation between the two classes.
+
+
+\section{Partial Derivatives and Gradients}
+
+When tackling an optimization problem, the typical approach is to minimize a function. This involves computing the derivative of the objective function, setting it equal to zero, and solving for the variable (in this case, \( \mathbf{w} \)). However, in the presence of constraints, such as \( y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 \), we cannot directly apply this procedure. 
+
+To work with constraints, we adjust our approach. Instead of directly solving for \( \mathbf{w} \) using just the objective function, we modify the problem to include both the objective function and the constraints. This results in a new equation where the constraint is "bundled" into the objective, allowing us to proceed with the minimization. The equation becomes:
+
+\[
+L = \min \frac{1}{2} \| \mathbf{w} \|^2 - \sum \alpha_i \left( y_i (\mathbf{w}^T \mathbf{x}_i + b) - 1 \right)
+\]
+
+The reason this approach works lies in the structure of the problem: the term \( \frac{1}{2} \| \mathbf{w} \|^2 \) is treated as the function \( f(\mathbf{w}) \), while the summation term acts as \( g(\mathbf{w}) \). This setup allows us to take the gradients of both functions, which boil down to:
+
+\[
+\nabla f = \alpha \nabla g
+\]
+
+This means the gradients of the objective function \( f(\mathbf{w}) \) and the constraint term \( g(\mathbf{w}) \) are parallel, and we can find the optimal solution by adjusting the weights based on these gradients.
+
+In machine learning, the weight vector \( \mathbf{w} \) can contain thousands or even billions of components. This is where multivariable calculus and gradient methods become particularly handy. For a function \( f(x_1, x_2, \dots, x_m) \), we can represent the gradient as a vector of the partial derivatives like so:
+\[
+\nabla f = \begin{bmatrix}
+\frac{\partial f}{\partial x_1} \\
+\frac{\partial f}{\partial x_2} \\
+\vdots \\
+\frac{\partial f}{\partial x_m}
+\end{bmatrix}
+\]
+
+Here is an example to see how to calculate partial derivatives by differentiating with respect to one variable while treating the other variables as constants. This helps us understand how the function changes in each direction. For instance, for the simple 3D parabola \( f(x, y) = x^2 + y^2 \), the partial derivatives are computed by holding one variable constant at a time. Specifically, when taking the partial derivative with respect to \( x \), we treat \( y \) as a constant, and when taking the partial derivative with respect to \( y \), we treat \( x \) as a constant, then take the derivative as usual:
+\[
+\frac{\partial f}{\partial x} = 2x, \quad \frac{\partial f}{\partial y} = 2y
+\]
+Thus, the gradient vector is:
+\[
+\nabla f = \begin{bmatrix} 2x \\ 2y \end{bmatrix}
+\]
+
+The gradient points in the direction of the steepest ascent, and we use it in gradient descent to find the minimum by moving in the opposite direction.
+
+\section{Gradient Descent}
+
+Once we have calculated the gradient, we can use various gradient descent techniques to optimize the weights and biases. Some common types of gradient descent include:
+
 \begin{itemize}
-    \item \textbf{Definition:} A function \( f(x) \) is \emph{monotonic} if whenever 
-    \[
-    x_1 \leq x_2, \quad \text{then} \quad f(x_1) \leq f(x_2).
-    \]
-    \item \textbf{Takeaway:} Lower input values yield lower output values.
+    \item \textbf{Regular Gradient Descent:} Uses the full dataset to compute the gradient at each iteration.
+    \item \textbf{Stochastic Gradient Descent (SGD):} Uses a single randomly selected data point for each iteration.
+    \item \textbf{Mini-Batch Gradient Descent:} Uses a small batch of data points for each iteration.
+    \item \textbf{Momentum:} Adds a fraction of the previous update to the current update to accelerate convergence.
+    \item \textbf{AdaGrad:} Adapts the learning rate based on the past gradients.
+    \item \textbf{RMSProp:} An adaptive learning rate algorithm that divides the gradient by an exponentially decaying average of squared gradients.
+    \item \textbf{Adam (Adaptive Moments):} A combination of Momentum and RMSProp, incorporating both the first and second moments of the gradients.
 \end{itemize}
-
-\subsection{Maximum Margin in SVMs}
-\begin{itemize}
-    \item \textbf{Margin:} The gap between the decision boundary and the closest data points (support vectors).
-    \item \textbf{Goal:} Maximize the margin, which is equivalent to maximizing 
-    \[
-    \frac{1}{\|w\|}.
-    \]
-    \item \textbf{Alternate Forms:} Minimizing any of these differentiable forms is equivalent:
-    \begin{itemize}
-        \item \(\|w\|\)
-        \item \(\|w\|^2\)
-        \item \(\frac{1}{2}\|w\|^2\)
-    \end{itemize}
-\end{itemize}
-
-\subsection{SVM Optimization Setup (Primal Problem)}
-\begin{itemize}
-    \item \textbf{Objective:}
-    \[
-    \min \frac{1}{2}\|w\|^2.
-    \]
-    \item \textbf{Constraints:} For every sample \((x_i, y_i)\),
-    \[
-    y_i (w^T x_i + b) \geq 1,
-    \]
-    or equivalently,
-    \[
-    y_i (w^T x_i + b) - 1 \geq 0.
-    \]
-\end{itemize}
-
-\subsection{Lagrange Multipliers and the Dual Problem}
-\begin{itemize}
-    \item \textbf{Purpose:} Incorporate inequality constraints into the optimization problem.
-    \item \textbf{Method:} Multiply each constraint by a Lagrange multiplier \(\alpha_i \geq 0\):
-    \[
-    \alpha_i \bigl( y_i (w^T x_i + b) - 1 \bigr).
-    \]
-    \item \textbf{Lagrangian Formulation:}
-    \[
-    L(w, b, \alpha) = \frac{1}{2}\|w\|^2 - \sum_{i=1}^{n} \alpha_i \bigl( y_i (w^T x_i + b) - 1 \bigr).
-    \]
-    \item \textbf{Dual Problem:} By taking derivatives with respect to \(w\) and \(b\) and setting them to zero, we obtain:
-    \[
-    w = \sum_{i=1}^{n} \alpha_i y_i x_i \quad \text{and} \quad \sum_{i=1}^{n} \alpha_i y_i = 0.
-    \]
-    Substituting \(w\) back into the loss function leads to the dual formulation:
-    \[
-    \max_{\alpha} \sum_{i=1}^{n} \alpha_i - \frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_i \alpha_j y_i y_j x_i^T x_j.
-    \]
-\end{itemize}
-
-\section{Computing the Gradient}
-
-The loss function for SVMs is given by:
-\[
-L = \frac{1}{2}\|w\|^2 - \sum_{i=1}^{n} \alpha_i \bigl( y_i (w^T x_i + b) - 1 \bigr).
-\]
-
-\subsection{The Left-hand Derivative}
-The derivative of \(\frac{1}{2}\|w\|^2\) with respect to \(w\) is:
-\[
-\frac{\partial \left(\frac{1}{2}\|w\|^2\right)}{\partial w} = w.
-\]
-
-\subsection{The Right-hand Derivative}
-For the term 
-\[
-\sum_{i=1}^{n} \alpha_i (y_i(w^T x_i + b) - 1),
-\]
-the derivative with respect to \(w\) is:
-\[
-\frac{\partial}{\partial w} \sum_{i=1}^{n} \alpha_i y_i w^T x_i = \sum_{i=1}^{n} \alpha_i y_i x_i.
-\]
-Similarly, the derivative with respect to \(b\) is:
-\[
-\frac{\partial}{\partial b} \sum_{i=1}^{n} \alpha_i y_i b = \sum_{i=1}^{n} \alpha_i y_i.
-\]
-
-Setting these derivatives equal to zero yields:
-\[
-w = \sum_{i=1}^{n} \alpha_i y_i x_i \quad \text{and} \quad \sum_{i=1}^{n} \alpha_i y_i = 0.
-\]
-
-Substituting \(w\) back into the loss function gives:
-\[
-L = \sum_{i=1}^{n} \alpha_i - \frac{1}{2}\, w^T w,
-\]
-which, after replacing \(w\) with \(\sum_{i=1}^{n} \alpha_i y_i x_i\), becomes:
-\[
-L = \sum_{i=1}^{n} \alpha_i - \frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_i \alpha_j y_i y_j x_i^T x_j.
-\]
-
-\begin{tcolorbox}
-\textbf{XPL1}: Demonstrate that 
-\[
-\sum_{i=1}^n \alpha_i \sum_{j=1}^n \beta_j = \sum_{i=1}^n \sum_{j=1}^n \alpha_i\beta_j.
-\]
-\end{tcolorbox}
-
-\section{Summary}
-In these notes, we have:
-\begin{itemize}
-    \item Reviewed monotonic functions and the concept of maximum margin in SVMs.
-    \item Set up the primal optimization problem for SVMs.
-    \item Incorporated constraints using Lagrange multipliers to derive the dual problem.
-    \item Computed gradients with respect to the weight vector \(w\) and bias \(b\) to establish optimality conditions.
-\end{itemize}
-
-This framework underpins many machine learning optimization techniques, including various gradient descent methods used in practice.
-
-\end{document}
