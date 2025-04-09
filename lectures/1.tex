@@ -222,26 +222,24 @@ Using the \textbf{Binary Indicator Function} we can describe the \textbf{Hamming
 % ----------------------------------------------------------------
 \section{Exploration (XPL) Problems}
 
-\begin{outline}[enumerate]
+\begin{enumerate}[font=\bfseries]
+    \item Is $d(\vec{x},\vec{y}) = \sqrt{|\vec{x}| + |\vec{y}|}$ a valid distance metric? \\
 
-\1  Is $d(\vec{x},\vec{y}) = \sqrt{|\vec{x}| + |\vec{y}|}$ a valid distance metric? \\
+    We can show this by confirming the 4 conditions of a distance metric:
+    
+    (i) $d(\vec{x},\vec{y}) \ge 0$: This is \textbf{true} as the range of the square root function is $[0,\infty)$.
+    
+    (ii) $d(\vec{x},\vec{y}) = 0$ iff $x=y$. This is \textbf{not true}. If $\vec{x}=\vec{y}$, then we have $\sqrt{2|\vec{x}|} \neq 0$.
+    
+    (iii) $d(\vec{x},\vec{y}) = d(\vec{y},\vec{x})$. This is \textbf{true}, as $|\vec{x}| + |\vec{y}| = |\vec{y}| + |\vec{x}|$.
+    
+    (iv) $d(\vec{x},\vec{z}) \leq d(\vec{x},\vec{y}) + d(\vec{y},\vec{z})$. Let's not bother; we already proved this false with number 2. \\
 
-We can show this by confirming the 4 conditions of a distance metric:
+    \item Is $d(\vec{x},\vec{y}) = (\vec{x} - \vec{y})^2$ a valid distance metric? \\
 
-(i) $d(\vec{x},\vec{y}) \ge 0$: This is \textbf{true} as the range of the square root function is $[0,\infty)$.
+    \item Is $d(\vec{x},\vec{x}) = 0$ $\wedge$ $d(\vec{x},\vec{y}) = 1$, $\forall \vec{x} \neq \vec{y}$ a valid distance metric? \\
 
-(ii) $d(\vec{x},\vec{y}) = 0$ iff $x=y$. This is \textbf{not true}. If $\vec{x}=\vec{y}$, then we have $\sqrt{2|\vec{x}|} \neq 0$.
+    \item Code the Binary Indicator Function using a functional programming paradigm. \\
 
-(iii) $d(\vec{x},\vec{y}) = d(\vec{y},\vec{x})$. This is \textbf{true}, as $|\vec{x}| + |\vec{y}| = |\vec{y}| + |\vec{x}|$.
-
-(iv) $d(\vec{x},\vec{z}) \leq d(\vec{x},\vec{y}) + d(\vec{y},\vec{z})$. Let's not bother; we already proved this false with number 2. \\
-
-
-\1  Is $d(\vec{x},\vec{y}) = (\vec{x} - \vec{y})^2$ a valid distance metric? \\
-
-\1 Is $d(\vec{x},\vec{x}) = 0$ $\wedge$ $d(\vec{x},\vec{y}) = 1$, $\forall \vec{x} \neq \vec{y}$ a valid distance metric? \\
-
-\1  Code the Binary Indicator Function using a functional programming paradigm \\
-
-\1 Prove $d_H(\vec{x},\vec{y})$ satisfies the Triangle Inequality
-\end{outline}
+    \item Prove $d_H(\vec{x},\vec{y})$ satisfies the Triangle Inequality.
+\end{enumerate}
