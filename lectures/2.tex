@@ -116,6 +116,46 @@ $$||x||_\infty = max(|x_1|, |x_2|, |x_3|, ... |x_p|)$$
 
 All norms are equivalent but not equal. If $||x||_1$ is larger than $||y||_1$ then $||x||_p$ is larger than $||y||_p$.
 
+\subsection{Sample visualizations of L2 and Chebyshev's Norm}
+
+\begin{tikzpicture}[scale=1.2]
+  \tikzset{
+    vector/.style={thick, ->, >=stealth},
+    level set/.style={thick, dashed, blue},
+    point/.style={draw, circle, inner sep=1.5pt, fill=black}
+  }
+
+  % Coordinate axes (L2 Norm)
+  \draw[thick, ->] (-2,0) -- (2,0) node[right] {$x_1$};
+  \draw[thick, ->] (0,-2) -- (0,2) node[above] {$x_2$};
+
+  % L2 norm level sets (circles)
+
+  \draw[level set] (0,0) circle (1.5) node[midway, above right] {};
+
+
+  % Origin label
+  \node[below left] at (0,0) {$0$};
+\end{tikzpicture}
+\begin{tikzpicture}[scale=1.2]
+  \tikzset{
+    vector/.style={thick, ->, >=stealth},
+    level set/.style={thick, dashed, blue},
+    point/.style={draw, circle, inner sep=1.5pt, fill=black}
+  }
+
+  % Coordinate axes (Chebyshev Norm)
+  \draw[thick, ->] (-2,0) -- (2,0) node[right] {$x_1$};
+  \draw[thick, ->] (0,-2) -- (0,2) node[above] {$x_2$};
+
+  % Chebyshev norm level sets (squares)
+
+  \draw[level set] (-1.5,-1.5) rectangle (1.5,1.5) node[midway, fill=white, inner sep=1pt] {};
+
+
+\end{tikzpicture}
+
+
 % ----------------------------------------------------------------
 \section{Inner Product}
 
