@@ -86,10 +86,10 @@ Similarly, there is another function known as the \textbf{Objective Function} wh
 \[ 
 \text{Objective Function}=\text{Cost} + \text{Regularizer}
 \]
-The purpose of the regularizer is to add a penalty to shrink a coefficient, or in other words, to minimize the loss function. This can be helpful for loss functions like square loss, which is sensitive to outliers and can compute unexpectedly large coefficients.
+The purpose of the regularizer is to discourage large weights by adding a penalty term to the cost function. This helps prevent overfitting and improves generalization. Common regularizers include L1 (Lasso) and L2 (Ridge), which shrink model coefficients during training.
 
 \subsection{Gradient Descent}
-Gradient descent is essentially a use case for calculating derivatives. In supervised Machine Learning (ML) tasks, its purpose is to find global minimums (where the derivative is 0) to optimize a model's loss function. 
+Gradient descent \cite{goodfellow2016deep} is essentially a use case for calculating derivatives. In supervised Machine Learning (ML) tasks, its purpose is to find global minimums (where the derivative is 0) to optimize a model's loss function. 
 
 
 Here are the names of some notable gradient descent methods:
@@ -97,12 +97,12 @@ Here are the names of some notable gradient descent methods:
     \1 Vanilla
     \1 Stochastic
     \1 Minibatch
-    \1 Hession
+    \1 Hessian
     \1 Momentum
 
 \end{outline}
 \subsubsection{Learning Rate}
-Gradient descent algorithms are based on learning rate. A good starting point for learning rate is 0.01 or 0.001:
+Gradient descent performance depends heavily on the learning rate, which determines the size of steps taken during optimization. A good starting point is often 0.01 or 0.001:
 \begin{itemize}
     \item Too large: Overshoots minima.
     \item Too small: Slow convergence.

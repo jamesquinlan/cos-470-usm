@@ -1,0 +1,110 @@
+\section{Introduction}
+This lecture covered optimization algorithms like RMSProp and Adam, their mathematical underpinnings, and a review of the calculus required for backpropagation in neural networks.
+
+\section{RMSProp and Adam Optimizer}
+
+\subsection*{RMSProp}
+\begin{itemize}
+    \item Updates parameters differently across dimensions.
+    \item Scales learning rates using an exponential moving average of squared gradients.
+    \item Helps mitigate issues like slow convergence in narrow valleys of the loss surface.
+\end{itemize}
+
+\textbf{RMSProp equations:}
+\[
+v = \beta v + (1 - \beta) \nabla L(w)^2
+\]
+\[
+w = w - \alpha \frac{\nabla L(w)}{\sqrt{v} + \epsilon}
+\]
+\[
+\epsilon = 10^{-8} \quad \text{(for numerical stability)}
+\]
+
+\subsection*{Adam Optimizer}
+\textbf{Overview:} Combines momentum and RMSProp — uses both first and second moments of the gradients.
+
+\[
+\text{Adam} = \text{Momentum} + \text{RMSProp}
+\]
+
+\textbf{Moment estimates:}
+\[
+m_t = \beta_1 m_{t-1} + (1 - \beta_1) \nabla C(w) \quad \text{(mean)}
+\]
+\[
+v_t = \beta_2 v_{t-1} + (1 - \beta_2) (\nabla C(w))^2 \quad \text{(variance)}
+\]
+
+\textbf{Bias correction:}
+\[
+\hat{m}_t = \frac{m_t}{1 - \beta_1^t}, \quad \hat{v}_t = \frac{v_t}{1 - \beta_2^t}
+\]
+
+\textbf{Update rule:}
+\[
+w_{t+1} = w_t - \alpha \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
+\]
+
+\section{Review of Calculus for Backpropagation}
+
+\subsection*{Loss Function}
+\[
+L = (y - \hat{y})^2 \quad \text{(Square Loss)}
+\]
+
+\subsection*{Goal}
+Minimize the loss by adjusting weights using derivatives (gradients).
+
+\subsection*{Notation}
+\[
+\frac{\partial C}{\partial x} \rightarrow \text{How much C changes with x}
+\]
+\[
+\frac{d}{dx} \rightarrow \text{Single variable derivative}
+\]
+\[
+\frac{\partial y}{\partial x} \rightarrow \text{Partial derivative}
+\]
+
+\subsection*{Chain Rule}
+If \( f(g(h(x))) \), then:
+\[
+\frac{d}{dx} f(g(h(x))) = f'(g(h(x))) \cdot g'(h(x)) \cdot h'(x)
+\]
+
+\textbf{Leibniz Notation:}
+\[
+\frac{dy}{dx} = \frac{dy}{dz} \cdot \frac{dz}{dx}
+\]
+
+\section{Backpropagation in Neural Networks}
+
+\subsection*{Forward Pass}
+\[
+z^{(l)} = w^{(l)} a^{(l-1)} + b^{(l)}
+\]
+\[
+a^{(l)} = \sigma(z^{(l)})
+\]
+
+\subsection*{Loss}
+\[
+L = (a^{(L)} - y)^2
+\]
+
+\subsection*{Backward Pass}
+\[
+\frac{\partial C}{\partial a} = 2(a - y)
+\]
+\[
+\frac{\partial a}{\partial z} = \sigma'(z)
+\]
+\[
+\frac{\partial z}{\partial w} = a^{(l-1)}
+\]
+
+\textbf{Gradient with respect to weight:}
+\[
+\frac{\partial C}{\partial w} = \frac{\partial C}{\partial a} \cdot \frac{\partial a}{\partial z} \cdot \frac{\partial z}{\partial w}
+\]

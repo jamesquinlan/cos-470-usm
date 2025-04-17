@@ -122,7 +122,7 @@ How do we know whether a model is good? For classification models, we use the fo
             \node at (4.4,-0.3) {GT};
         \end{tikzpicture}
     }
-    \caption{Confusion Matrix}
+    \caption{Confusion Matrix: TP = True Positive, FP = False Positive, FN = False Negative, TN = True Negative}
     \label{fig:confusion_matrix}
 \end{figure}
 % ----------------------------------------------------------------
@@ -144,12 +144,7 @@ How do we know whether a model is good? For classification models, we use the fo
     \1 The goal is to find a decision boundary or hyperplane to separate the data. There can be multiple decision boundaries.
     \1 For non-linear decision boundaries, techniques like the kernel trick can be used to create a hyperplane.
 
-    \1\textbf{Kernel Trick:} The kernel trick enables the perceptron to operate in higher-dimensional spaces by replacing the standard dot product with 
-    a kernel function. This kernel function effectively computes the dot product in a transformed, higher-dimensional space without 
-    explicitly performing the transformation. It acts as a similarity measure between points, corresponding to a dot product in that 
-    space. The trick works because the perceptron decision function is based solely on dots between data points. By substituting a kernel 
-    function, the perceptron can classify data in a higher-dimensional space, where it might become linearly separable, without the computational 
-    expense of transforming the points directly.
+    \1 \textbf{Kernel Trick:} The kernel trick allows the perceptron to operate in higher-dimensional feature spaces by using a kernel function instead of the standard dot product. This function implicitly transforms the data into a higher-dimensional space where it may become linearly separable. The kernel computes similarity between points without explicitly mapping them, making the process more efficient and enabling the perceptron to handle complex decision boundaries.
  
     \1 Assumptions:
     
@@ -206,19 +201,6 @@ def perceptron(D, max_epochs=100):
     return w
 \end{minted}
     
-\end{outline}
-
-
-\begin{outline}
-    \1 First machine learning/AI algorithm, introduced by Frank Rosenblatt in 1957.
-    \1 The goal is to find a decision boundary or hyperplane to separate the data. There can be multiple decision boundaries.
-    \1 For non-linear decision boundaries, techniques like the kernel trick can be used to create a hyperplane.
-    \1 Assumptions:
-        \2 The data is linearly separable.
-    \1 Definition: Hyperplane
-        \2 $\{(\vec{x}_1,y_1),(\vec{x}_2,y_2),...,(\vec{x}_n,y_n)\}$ where $y$ are labels.
-        \2 $\mathcal{H}=\{x_i\mid w^Tx+b=0\}$ where $w$ is the vector of weights and $b$ is the bias and $b\in\mathbb{R}$.
-        \2 Goal is to find $w$ and $b$.
 \end{outline}
 
 
