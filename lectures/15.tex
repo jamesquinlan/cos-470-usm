@@ -1,0 +1,203 @@
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+% SUMMARY    : Calculus Review, and Backpropagation
+%            : University of Southern Maine 
+%            : @james.quinlan
+%            : Michael Yattaw - Lecture 15 (4/16/2025)
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+\section*{Objectives}
+
+\begin{outline}
+    \1 Math Review
+    \1 Backpropagation
+    
+\end{outline}
+
+\rule[0.0051in]{\textwidth}{0.00025in}
+% ----------------------------------------------------------------
+
+\section{Math Review for Backpropagation}
+
+\subsection{Function Types and Domains}
+
+\begin{itemize}
+    \item $f: \mathbb{R} \to \mathbb{R}$: Maps a number to a number (single variable).
+    \item $f: \mathbb{R}^n \to \mathbb{R}$: Multivariable function.
+    \item $f: \mathbb{R}^n \to \mathbb{R}^m$: Multivariable vector-valued function.
+\end{itemize}
+
+\subsection{Understanding the Derivative from First Principles}
+
+\textbf{Definition of Derivative:} Let $y = f(x)$.
+\[
+y' = \frac{dy}{dx} = f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
+\]
+
+\textbf{Exercise 1:} Find \( f'(x) \) given the function \( f(x) = x^2 \)
+
+\begin{align*}
+f'(x) &= \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} \\
+      &= \lim_{h \to 0} \frac{(x+h)^2 - x^2}{h} \\
+      &= \lim_{h \to 0} \frac{x^2 + 2xh + h^2 - x^2}{h} \\
+      &= \lim_{h \to 0} \frac{2xh + h^2}{h} \\
+      &= \lim_{h \to 0} \frac{h(2x + h)}{h} \\
+      &= \lim_{h \to 0} (2x + h) \\
+      &= 2x
+\end{align*}
+
+\textbf{Exercise 2:} Given $g(x) = C$, where $C$ is a constant, find $g'(x)$.
+
+\begin{align*}
+g'(x) &= \lim_{h \to 0} \frac{g(x+h) - g(x)}{h} \\ \\
+      &= \lim_{h \to 0} \frac{C - C}{h} \\
+      &= \lim_{h \to 0} \frac{0}{h} \\
+      &= 0
+\end{align*}
+
+\subsection{The Power Rule via Binomial Expansion}
+
+\[f(x) = x^2, f'(x) = nx^{n-1}\]
+
+\textbf{Exercise 3:} Use the binomial expansion to find the derivative of $f(x) = x^n$.
+
+The binomial coefficient is defined as:
+\[
+\binom{n}{k} = \frac{n!}{k!(n-k)!}, \quad \text{where } 0! = 1.
+\]
+For example:
+\[
+\binom{n}{0} = \frac{n!}{0!(n-0)!} = \frac{n!}{n!} = 1.
+\]
+
+These coefficients appear in Pascal's triangle, which lists the coefficients of the binomial expansion for increasing \(n\). For \(n = 0\) to \(n = 4\):
+
+\[
+\begin{array}{ccccccccc}
+ & & & & 1 & & & & \quad (n=0)\\[4pt]
+ & & & 1 & & 1 & & & \quad (n=1)\\[4pt]
+ & & 1 & & 2 & & 1 & & \quad (n=2)\\[4pt]
+ & 1 & & 3 & & 3 & & 1 & \quad (n=3)\\[4pt]
+1 & & 4 & & 6 & & 4 & & 1 \quad (n=4)\\
+\end{array}
+\]
+
+Using the binomial expansion, \((x+h)^n = \sum_{k=0}^n \binom{n}{k} x^{n-k} h^k\), we compute the derivative:
+\begin{align*}
+f'(x) &= \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} \\
+      &= \lim_{h \to 0} \frac{(x+h)^n - x^n}{h} \\
+      &= \lim_{h \to 0} \frac{\sum_{k=0}^n \binom{n}{k} x^{n-k} h^k - x^n}{h} \\
+      &= \lim_{h \to 0} \frac{\binom{n}{0} x^n + \binom{n}{1} x^{n-1} h + \binom{n}{2} x^{n-2} h^2 + \cdots + \binom{n}{n} h^n - x^n}{h} \\
+      &= \lim_{h \to 0} \frac{\binom{n}{1} x^{n-1} h + \binom{n}{2} x^{n-2} h^2 + \cdots + \binom{n}{n} h^n}{h} \\
+      &= \lim_{h \to 0} \left( \binom{n}{1} x^{n-1} + \binom{n}{2} x^{n-2} h + \cdots + \binom{n}{n} h^{n-1} \right) \\
+      &= \binom{n}{1} x^{n-1} \\
+      &= n x^{n-1}.
+\end{align*}
+
+\subsection{Product, Quotient, and Chain Rules}
+
+Let's say we have a product of two functions, then the derivative is given by the \textbf{Product rule}:
+
+\[
+(f(x) \cdot g(x))' = f'(x) \cdot g(x) + f(x) \cdot g'(x)
+\]
+
+Similarly, if we have a quotient of two functions, the \textbf{Quotient rule} gives:
+
+\[
+\left( \frac{f(x)}{g(x)} \right)' = \frac{f'(x)g(x) - f(x)g'(x)}{(g(x))^2}
+\]
+
+Final important rule is the \textbf{Chain Rule} which gives:
+\[
+f(g(x)) = f'(g(x)) \cdot g'(x)
+\]
+
+\[f(g(h(x)))=f'(g(h(x)) \cdot g'(h(x)) \cdot h'(x)\]
+
+\textbf{Exercise 4:} Find \( f'(x) \) given \(f(x) = (3x^2 - 5x = 6)^3\)
+
+\[ f(x) = x^3, \quad f'(x) = 3x^2\]
+\[ g(x) = 3x^2 -5x +6, \quad 6x - 5\]
+
+\[= 3(3x^2 -5 + 6)^2 \cdot (6x - 5)\]
+
+\textbf{Exercise 5:} Find \( f'(x) \) given the function \( f(x) = \sqrt{\sin(x^2)} \)
+
+\bigskip
+
+First, decompose it into a composition of three functions:
+\begin{align*}
+y &= \sqrt{v} = \sqrt{\sin(x^2)} \\
+v &= \sin(u) \\
+u &= x^2
+\end{align*}
+
+Now compute the derivative using the chain rule:
+
+\begin{align*}
+\frac{dy}{dv} &= \frac{1}{2} v^{-1/2} = \frac{1}{2} \left( \sin(x^2) \right)^{-1/2}, \\
+\frac{dv}{du} &= \cos(u) = \cos(x^2), \\
+\frac{du}{dx} &= 2x.
+\end{align*}
+
+Applying the chain rule:
+
+\[
+\frac{dy}{dx} = \frac{dy}{dv} \cdot \frac{dv}{du} \cdot \frac{du}{dx}
+= \frac{1}{2} \left( \sin(x^2) \right)^{-1/2} \cdot \cos(x^2) \cdot 2x
+= \frac{x \cos(x^2)}{\sqrt{\sin(x^2)}}.
+\]
+
+\subsection{Multivariable Derivatives}
+
+For a function of multiple variables, such as:
+
+\[
+f(x, y) = x^3 + 3y^2,
+\]
+
+we can take partial derivatives with respect to each variable:
+
+\[
+\frac{\partial f}{\partial x} = 3x^2, \quad \frac{\partial f}{\partial y} = 6y.
+\]
+
+These partial derivatives together form the \textbf{gradient} of \(f\), which is a vector that points in the direction of the greatest rate of increase of the function. The gradient is denoted by \(\nabla f\) and defined as:
+
+\[
+\nabla f(x, y) = \left\langle \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y} \right\rangle = \left\langle 3x^2, 6y \right\rangle.
+\]
+
+So, the gradient of a scalar function \(f(x, y)\) is a \textbf{vector-valued function} that contains all its first partial derivatives.
+
+\bigskip
+
+In multivariable calculus, when working with products of functions, the product rule still applies. For example, if
+
+\[
+h(x, y) = f(x, y) \cdot g(x, y),
+\]
+
+then the partial derivative with respect to \(x\) is:
+
+\[
+\frac{\partial h}{\partial x} = \frac{\partial f}{\partial x} \cdot g(x, y) + f(x, y) \cdot \frac{\partial g}{\partial x}.
+\]
+
+\textbf{Exercise 6:} Given $C(x, y) = xy^2 + \ln (\sin x)$, find $\nabla C$.
+
+\[
+\nabla C = 
+\begin{bmatrix}
+    \frac{\partial C}{\partial x} \\
+    \frac{\partial C}{\partial y}
+\end{bmatrix}
+=
+\begin{bmatrix}
+    y^2 + \cot x \\
+    2xy
+\end{bmatrix}
+\]
+
+\section{Backpropagation}
+
+These mathematical exercises are crucial for developing a solid understanding of backpropagation. The gradients of the loss function with respect to each weight are computed using partial derivatives. By iteratively applying the chain rule, backpropagation efficiently updates the model parameters to minimize the error.
