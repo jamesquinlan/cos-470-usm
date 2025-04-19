@@ -31,6 +31,7 @@ y \in \{1, 2, 3\}
 \[
 y \in \mathbb{R}
 \]
+Regression is used when the target variable is continuous rather than discrete. For instance, instead of predicting whether an email is spam or not (a classification task), a regression model might predict the price of a house, the temperature tomorrow, or the demand for a product—all of which require real-valued outputs.
 For both regression and classification, the dataset takes the same form:
 \[
 D = \{(x_1, y_1), (x_2, y_2),...,(x_n, y_n)\}
@@ -94,12 +95,11 @@ Gradient descent is essentially a use case for calculating derivatives. In super
 
 Here are the names of some notable gradient descent methods:
 \begin{outline}
-    \1 Vanilla
-    \1 Stochastic
-    \1 Minibatch
-    \1 Hession
-    \1 Momentum
-
+    \1 \textbf{Vanilla:} Uses the entire dataset to compute the gradient at each step. It is accurate but computationally expensive for large datasets.
+    \1 \textbf{Stochastic:} Updates the model parameters using a single training example at each step. It is faster but introduces more noise in the updates.
+    \1 \textbf{Mini-batch:} A compromise between Vanilla and Stochastic. It updates the model using small batches of data, balancing efficiency and stability.
+    \1 \textbf{Hessian:} Uses second-order derivatives (the Hessian matrix) to adjust parameters more precisely. It converges faster but is computationally intensive.
+    \1 \textbf{Momentum:} Speeds up gradient descent by adding a fraction of the previous update to the current one, helping to smooth out oscillations and accelerate convergence.
 \end{outline}
 \subsubsection{Learning Rate}
 Gradient descent algorithms are based on learning rate. A good starting point for learning rate is 0.01 or 0.001:
