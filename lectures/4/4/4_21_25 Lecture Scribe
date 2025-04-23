@@ -1,0 +1,133 @@
+\author{Abdirahman Addan}
+\date{April 21 2025}
+
+\begin{document}
+
+\maketitle
+
+\section*{Objectives}
+\begin{outline}
+    \1 Understand how derivatives work in a neural network
+    \1 Learn the chain rule for backpropagation
+    \1 Go over different activation functions
+\end{outline}
+
+\rule[0.0051in]{\textwidth}{0.00025in}
+% ----------------------------------------------------------------
+
+\section{Equations}
+
+A derivative shows how fast a function’s output changes as its input changes. like turning one knob to see how it moves others. 
+
+The derivative of $e^x$ is still $e^x$
+\[ \frac{d}{dx}e^x = e^x \]
+
+Sigmoid function:
+\[ \sigma(x) = \frac{1}{1 + e^{-x}} \]
+Its derivative is:
+\[ \sigma'(x) = \sigma(x)(1 - \sigma(x)) \]
+
+There are other functions too like tanh and ReLU
+
+Now we go through backpropagation
+Set $x = 1.5$, $y = 0.5$, $w = 0.8$
+First we do $z = wx$, and $a = \sigma(z)$
+The cost is:
+\[ C = (a - y)^2 \]
+
+We use the chain rule:
+\begin{align*}
+    dcda(a) &= 2a - 1 \\ 
+    dadz(z) &= 1 \text{ if identity, or } \sigma(z)(1 - \sigma(z)) \text{ if using sigmoid} \\ 
+    dzdw &= x \\ 
+    dcdw &= dcda \cdot dadz \cdot dzdw
+\end{align*}
+
+We update $w$ each time using:
+\[ w = w - 0.1 \cdot dcdw \]
+
+Repeat until $dcdw$ is very small like less than $1e{-4}$
+
+\rule[0.0051in]{\textwidth}{0.00025in}
+% ----------------------------------------------------------------
+
+\section{Extended Equations}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{c c}
+     \toprule
+    Symbol & what does it mean \\
+      \midrule
+   $e^x$ & Exponential\\
+   $\sigma(x)$ & Sigmoid\\
+   $C = (a - y)^2$ & Cost\\
+   $\frac{dC}{dw}$ & Change in the cost with weight\\
+\t\bottomrule
+    \end{tabular}
+    \caption{Math used in neural networks}
+    \label{tab:nn_math}
+\end{table}
+
+\begin{figure}
+   \centering
+   \includegraphics[width=2in]{figures/example} 
+   \caption{One-layer neural network: $\hat{y} = \sigma(Wx + b)$}
+   \label{fig:example}
+\end{figure}
+
+% ----------------------------------------------------------------
+\section{Algorithm and Code}
+
+\begin{algorithm}[h]
+\caption{Gradient Descent Loop with Stopping Condition}
+\begin{algorithmic}[1]
+    \Require $x = 1.5$, $y = 0.5$, $w = 0.8$, $\eta = 0.1$
+    \Ensure $w$ moves toward the best value
+    \For{$i = 1$ to $100$}
+        \State $z = w \cdot x$
+        \State $a = \sigma(z)$
+        \State $dcda = 2a - 1$
+        \State $dadz = \sigma(z)(1 - \sigma(z))$
+        \State $dzdw = x$
+        \State $dcdw = dcda \cdot dadz \cdot dzdw$
+        \State $w = w - 0.1 \cdot dcdw$
+        \State Print $w$
+        \If{$dcdw < 1e{-4}$}
+            \State break
+        \EndIf
+    \EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\begin{lstlisting}[language=Python]
+def sigma(z):
+    return 1 / (1 + math.exp(-z))
+
+def dcda(a):
+    return 2 * a - 1
+
+def dadz(z):
+    s = sigma(z)
+    return s * (1 - s)
+
+def dzdw(x):
+    return x
+
+x = 1.5
+y = 0.5
+w = 0.8
+lr = 0.1
+
+for _ in range(100):
+    z = w * x
+    a = sigma(z)
+    dcdw = dcda(a) * dadz(z) * dzdw(x)
+    w = w - lr * dcdw
+    print(w)
+    if dcdw < 1e-4:
+        break
+\end{lstlisting}
+
+
+\end{document}
