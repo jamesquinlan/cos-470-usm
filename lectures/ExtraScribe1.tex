@@ -1,0 +1,153 @@
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+% SUMMARY    : Extra Scribe 1 (Masters Student Assignment)
+%            : University of Southern Maine 
+%            : @james.quinlan
+%            : Sarah Lawrence 
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+\section*{Objectives}
+\begin{itemize}
+    \item Objective 1
+    \item Objective 2
+    \item Objective 3
+\end{itemize}
+
+\rule[0.0051in]{\textwidth}{0.00025in}
+% ----------------------------------------------------------------
+
+
+\section{Theorem}
+if ${u_1,u_2,...,u_u}$ Orthonormal and $v=\sum c_iu_i$ then $c_i=<u_i,v>$\\
+\subsection{Proof}
+\begin{align*}
+<u_i,v> &=<u_i,\sum_{j=1}^{n}c_ju_j\\
+&=\sum c_j <u_{ji}u_i>\\
+&=\sum_{j=1}^{n} c_jf_{ij}\\
+&= c_i
+\end{align*}
+\textbf{Based on:} $<ax+y,z>=a<x,z>+<y,z>$ \\
+\textbf{Corollary:} if $u=\sum a_iu_i \land \lor =\sum b_iu_i$
+\subsection{Proof}
+\begin{align*}
+<u,v> &=<a_iu_i,b_iu_i>\\
+&=a_1<u_1,\sum b_iu_i>+a_2<u_2,v>+...\\
+&=a_1b_1<u_1,u_1>+a_1b_2<u_1,u_2>+...\\
+&+a_2b1<u_2,u_1>+...\\
+<u,v> &=<\sum a_i u_i,v>\\
+&=\sum a_i<u_i,v>\\
+&=\sum a_i <v_1u_i>\\
+&=\sum a_i b_i\\
+\end{align*}
+
+\subsection{Definitions}
+\subsubsection{Def 1}
+$||v||=\sqrt{<v,v>}=\sqrt{v^tv}$
+\subsubsection{Def 2}
+$O\in \mathbb{R}^n*n$ is or orthogonal if $Qi$ from orthogonal set.
+\subsubsection{Def 3}
+Orthogonal set $\{u_1,u_2,...,u_u\}$ \\
+Orthogonal unit vectors\\
+\[
+u_i^tu_j=\delta_{ij}= 
+\begin{cases}
+1 & \text{if } i = j \\
+0 & \text{if } i \ne j
+\end{cases}
+\]
+\subsubsection{Def 4}
+Gwen avg $\{v_1,v_2,...,v_u\}$ orthogonal\\
+$u_i = \frac{v_i}{||v_i||}$ are normalized, hence orthogonal\\
+\textbf{Ex:}
+\begin{align*}
+v_1 &= (1, 1, 1)^\top \rightarrow\quad u_1 = \frac{1}{\sqrt{3}} v_1 \\
+v_2 &= (2, 1, -3)^\top \rightarrow\quad u_2 = \frac{1}{\sqrt{14}} v_2 \\
+v_3 &= (4, -5, 1)^\top \rightarrow\quad u_3 = \frac{1}{\sqrt{42}} v_3
+\end{align*}
+\subsubsection{Def 5}
+$a|b$ iff $\exists k \in \mathbb{Z}: b=ak$\\
+\begin{itemize}
+  \item b is a multiple of a
+  \item a is a divisor of b
+  \item a is a factor of b
+\end{itemize}
+\subsubsection{Def 6}
+$n>1$ is prime is only divisors a $1 \land n$. (no factors)
+\subsubsection{Def 7}
+Composite is not prime (has at least 1 factor).
+\subsubsection{Def 8}
+If a/n $\land a/m$, then a is a common factor. 
+\subsubsection{Def 9}
+gcd$(m,n)=d \Leftrightarrow d|m \land d|u$ and if $h|m \land h|n$, then $d \leq h$
+
+\section{Theorem}
+if $h|n \land h|m$, then $\forall i,j  h|(in+jm)$. 
+
+\subsection{Proof}
+$n=nk$, $\land m=hk_2$ then 
+\begin{align*}
+in+jm &=ihk_1+jhk_2\\
+&=h(ik_1+jk_2)\\
+\rightarrow & h|(in+jm)
+\end{align*}
+
+\subsection{Definition}
+(Quotient) $\forall m,n:m\ne0$ 
+$q= \lfloor \frac{n}{m} \rfloor$ and (remainder) of dividing n by m is $r=n-qm$. ($r=n$ mod $m)$ \\
+i.e. 
+\[
+\boxed{n = mq + r \quad \text{such that} \quad
+\begin{cases}
+0 & \text{if} \ 0 \leq r < m  \quad m > 0\\
+m & \text{if} \ m \leq r \leq 0  \quad m < 0
+\end{cases}
+}
+\]
+
+\section{Theorem}
+let $m,n \in \mathbb{Z}: m \ne 0 V n\ne0 $ and (not both 0) let $d=min\{in+jm$such that$i,j\in \mathbb{Z} \land in+jm >0\}$ then $d=gcd(m,n)$. 
+
+\subsection{Proof}
+$d=in+jm$.(smallest linear combo of $m \land n$, moreover, $n=qd+r$ with  $0 \leq r < d$. Therefor we have 
+\begin{align*}
+n&=q(in+jm)+r\\
+&=qin+qjm+r\\
+r&=n(1-qi)+m(qi)
+\end{align*}
+Since r is linear combo but d is minimal $\land r<d$, then $r=0$, $\rightarrow d|n $. Sumilarly $d|m$ $\rightarrow d$ is common divisor $\rightarrow d \leq gcd(m,n)$. Also since $gcd(m,n)$ divides $m \land n$ and $d=in+jm$, then $gcd(m,n)|d \rightarrow d=gcd(m,n)k \rightarrow d \geq acd(m,n)$
+\textbf{Corollary:} if $h|n \land h|m$, then $h|gcd(m,n)$ 
+
+\subsection{Proof}
+$gcd(m,n) = am+bn$\\
+$\therefore$ since $h|m \land h|n$ then $m=hk_1 \land n=hk_2$ then
+\begin{align*}
+gcd(m,n)&= hak_1 + hbk_2\\
+&=h(ak_1+dk_2)\\
+\end{align*}
+
+\section{Theorem}
+Suppose $n \geq 0 \quad m>0 $. Let $r=n \quad mod m$ then $gcd(m,n)=gcd(m,r).$ 
+\subsection{Proof}
+show $gcd(m,n)|gcd(m,n)$ and vice versa. Let $d_1 = gcd(m,n)$, then $d_1|m \land d_1/n \rightarrow m=d_1k_1 \land n=d_1k_2$. Also $n=mq+r \quad \exists q_1r$:$0\leq r <m$
+
+\section{Gradient Descent}
+\begin{itemize}
+  \item Compute sequence of vectors in $\mathbb{R}^s$ aiming to converge to a vector that minimizes cost
+  \item if $\Delta p \approx0$,then Taylor Series gives $Cost(p+\Delta p) \approx Cost(p)+ \sum_{r=1}^{s} \frac{\partial Cost(p)}{\partial pr}$.$\Delta pr$. $Cost(p)+ \frac{\partial C(p)}{\partial p} +\frac{\partial C(p)}{\partial p_2}+...+\frac{\partial C(p)}{\partial p_2}$
+  \item Denote $\nabla C(p) \in \mathbb{R}^s$, gradient (vector of partial derivatives). 
+  \item $\frac{\partial C(p)}{\partial pi} =$ how much Cost changes in the "direction" pi.
+  \item $(\nabla C(p))_r = \frac{\partial C(p)}{\partial p_r}$
+  \item $Cost (p+\Delta p) \approx Cost(p)+ \nabla Cost(p)^t\Delta p $. \\
+\[
+\boxed{Cost (p + \Delta p) \approx C(p) + \nabla C(p)^t \Delta p}
+\]
+  \item Choose $\Delta p $ to make $ \nabla C(p)^t\Delta p$ as negative as possible.
+  \item Cauchy - Schwarz Inequality. \\
+  $|x^ty| \leq||x||_2*||y||_2$\\
+  $\therefore -||x||_2*||y||_2  \leq x^ty \leq||x||_2*||y||_2$\\
+  $-||x||_2*||y||_2$ most negtive $x^ty$ can be.\\
+  $\rightarrow$ When $x=-y$.
+\end{itemize}
+\textbf{Note:} $|x^y|=|x*y|=||x||_2*||y||_2*cos0 \quad x= \lambda y$, then $|\lambda y*y|=|\lambda|*||y||^2=||y||*||y||*|cos0|$\\
+$||x||=\sqrt{x^tx}$\\
+$||y|| = $
