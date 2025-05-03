@@ -1,0 +1,87 @@
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+% SUMMARY    : Optimizers & Backpropagation
+%            : University of Southern Maine
+%            : @james.quinlan
+%            : Nathaniel Serrano, Silas Qualls - Lecture 12
+%            : Updated by Abdirahman Mohamed
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{outline}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\title{Optimizers \& Backpropagation}
+
+
+\begin{document}
+\maketitle
+
+\section*{Objectives}
+\begin{outline}
+    \1 Explain adaptive optimization algorithms
+        \2 RMSProp: per-parameter scaling via squared gradients
+        \2 Adam: bias-corrected first and second moments
+    \1 Review computational graph and chain rule
+    \1 Derive backpropagation update rules
+\end{outline}
+
+\hrulefill
+
+\section{RMSProp}
+RMSProp adapts learning rates for each parameter by maintaining an exponential moving average of squared gradients:
+\begin{align*}
+ v_t &= \beta\,v_{t-1} + (1-\beta)\bigl(\nabla C(w_{t-1})\bigr)^2, \\
+ w_t &= w_{t-1} - \eta\,\frac{\nabla C(w_{t-1})}{\sqrt{v_t}+\epsilon},
+\end{align*}
+where typical defaults are $\beta=0.9$ and $\epsilon=10^{-8}$. This reduces oscillations in steep directions while preserving progress in flatter dimensions.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+  \begin{axis}[view={0}{90}, xlabel={$w_1$}, ylabel={$w_2$}, axis lines=middle, ticks=none,
+    title={RMSProp Descent on Loss Contours}]
+    % Contour of z = w1^2 + 4 w2^2
+    \addplot3[contour gnuplot={levels={1,2,4,8,16}}, thick] {x^2 + 4*y^2};
+    % Descent path
+    \addplot[red, thick, mark=*] coordinates {
+      (-2.5,0.5) (-2.2,0.8) (-1.9,0.3) (-1.6,-0.2) (-1.3,-0.4)
+      (-1.0,-0.3) (-0.7,-0.1) (-0.4,0.05) (-0.2,0.01) (0,0)
+    };
+  \end{axis}
+\end{tikzpicture}
+\caption{RMSProp reduces vertical oscillation for faster convergence.}
+\end{figure}
+
+\section{Adam}
+Adam combines momentum (1st moment) and adaptive rate (2nd moment):
+\begin{align*}
+ m_t &= \beta_1 m_{t-1} + (1-\beta_1)\nabla C(w_{t-1}), \\
+ v_t &= \beta_2 v_{t-1} + (1-\beta_2)\bigl(\nabla C(w_{t-1})\bigr)^2, \\
+ \hat m_t &= \frac{m_t}{1-\beta_1^t}, \quad \hat v_t = \frac{v_t}{1-\beta_2^t}, \\
+ w_t &= w_{t-1} - \eta\,\frac{\hat m_t}{\sqrt{\hat v_t}+\epsilon},
+\end{align*}
+with $\beta_1=0.9$, $\beta_2=0.999$, and $\epsilon=10^{-8}$. Adam is robust across architectures (e.g., ANN, CNN, RNN).
+
+\section{Computational Graph & Backpropagation}
+A computational graph represents the forward pass, and backprop computes gradients via the chain rule:
+
+\begin{tcolorbox}[title=Chain Rule]
+If $F=f\circ g\circ h$, then
+\[ F'(x)=f'(g(h(x)))\,g'(h(x))\,h'(x). \]
+\end{tcolorbox}
+
+For a feedforward network layer:
+\[ z^{(l)} = W^{(l)}a^{(l-1)} + b^{(l)}, \quad a^{(l)} = \sigma(z^{(l)}). \]
+Gradients:
+\begin{align*}
+ \delta^{(l)} &= \frac{\partial C}{\partial z^{(l)}} 
+ = \bigl(W^{(l+1)}\bigr)^T \delta^{(l+1)} \odot \sigma'(z^{(l)}), \\
+ \frac{\partial C}{\partial W^{(l)}} &= \delta^{(l)}\,(a^{(l-1)})^T, \quad
+ \frac{\partial C}{\partial b^{(l)}} = \delta^{(l)}.
+\end{align*}
+
+\end{document}
