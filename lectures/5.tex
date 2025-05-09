@@ -17,7 +17,7 @@
 % ----------------------------------------------------------------
 \section{Continuation of Prior Lecture}
 
-Consider the following.
+Consider the following:
 
 \begin{enumerate}
     \item Given $[a,b] \rightarrow [0,1]$ our objective is to map $a \rightarrow 0$ and $b \rightarrow 1$
@@ -49,12 +49,16 @@ Consider the following.
         \end{array}
     \]
 
-    Check the formula by testing with $0,\frac{1}{2},1$, which make up the bounds and the midpoint. 
+    \begin{itemize}
+        \item Check the formula by testing with $0,\frac{1}{2},1$, which make up the bounds and the midpoint. 
+        \item It is given that $(a,0) \land (b,1)$ where $m=\frac{1-0}{b-a}=\frac{1}{b-a}$.
+        \item We can then derive $y-0=\frac{1}{b-a}(x-a)= {\frac{1}{b-a}x-\frac{a}{b-a}}$
+    \end{itemize}
     
-    It is given that $(a,0) \land (b,1)$ where $m=\frac{1-0}{b-a}=\frac{1}{b-a}$.
-    
-    We can then derive $y-0=\frac{1}{b-a}(x-a)= {\frac{1}{b-a}x-\frac{a}{b-a}}$
     \item $[a,b] \rightarrow [c,d]$
+
+    
+    
 
     \begin{align*}
        \frac{x-a}{b-a}d + \frac{b-x}{b-a}c \\
@@ -64,20 +68,31 @@ Consider the following.
 % ----------------------------------------------------------------
 \section{More about kNN \cite{guo2003knn}}
 
-argmax$\sum_{i \in n_k}^{}$I$c_j(y_i)$ $j={1,2,...m}$ \\
-suppose $j=2$ and $k=8$, it is binary classification, $N_k=$ set of indicies of the KNN \\
+\begin{equation}
+    \arg\max_{j=1,2,\ldots,m} \sum_{i \in N_k} I(c_j(y_i))
+\end{equation}
+where:
+\begin{outline}
+    \1 $j$ indexes the classes,
+    \1 $k$ is the number of neighbors,
+    \1 $N_k$ is the set of indices of the $k$ nearest neighbors,
+    \1 $I(\cdot)$ is the indicator function.
+\end{outline}
+
+Suppose $j=2$, $k=8$, and it is a binary classification problem.
+ 
 
 Example problem: \\
 $y=[1,-1,-1, \ 1, \ 1, \ 1,-1, \ 1]$ \\
 $c = [1, \ -1$], \\
 $x_t \rightarrow 1$ \\
-$argmax_{j=[1,2]}, \ c_j=1, $ \\$[I(1=1)+I(1=-1)+I(1=-1)+I(1=1)+I(1=1)+I(1=1)+I(1=-1)+I(1=1)],$ \\
+$\arg\max_{j=[1,2]}, \ c_j=1, $ \\$[\mathcal{I}(1=1)+\mathcal{I}(1=-1)+\mathcal{I}(1=-1)+\mathcal{I}(1=1)+\mathcal{I}(1=1)+\mathcal{I}(1=1)+\mathcal{I}(1=-1)+\mathcal{I}(1=1)],$ \\
 $= 1+0+0+1+1+1+0+1 = 5$\\
-$argmax_{j=[1,2]}, \ c_j=-1, $ \\
-$[I(-1=1)+I(-1=-1)+I(-1=-1)+I(-1=1)+I(-1=1)+I(-1=1)+I(-1=-1)+I(-1=1)]$ \\
+$\arg\max_{j=[1,2]}, \ c_j=-1, $ \\
+$[\mathcal{I}(-1=1)+\mathcal{I}(-1=-1)+\mathcal{I}(-1=-1)+\mathcal{I}(-1=1)+\mathcal{I}(-1=1)+\mathcal{I}(-1=1)+\mathcal{I}(-1=-1)+\mathcal{I}(-1=1)]$ \\
 $= 0+1+1+0+0+0+1+0 = 3$\\
-$argmax_{j=[1,2]}$ $[5,3]=1$ \\
-When j = 1, the function returns 5, versus it returning 3 when j = 2,
+$\arg\max_{j=[1,2]}$ $[5,3]=1$ \\
+When $j = 1$, the function returns $5$, versus it returning $3$ when $j = 2$,
 so the \textit{argument} which leads to the \textit{maximum} output is
 1.
 

@@ -1,0 +1,110 @@
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+% SUMMARY    : Lecture 14 (04/02/2025)
+%            : University of Southern Maine 
+%            : @james.quinlan
+%            : John Parks
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+\section*{Objectives}
+\begin{outline}
+    \1 Optimizers
+    \1 Gradient Descent
+\end{outline}
+
+\rule[0.5ex]{\textwidth}{0.5pt}
+
+\section*{Optimizers}
+
+\textbf{Goal:} Find $\arg\min$ or $\arg\max$ of a function.
+
+\textbf{Loss function:} We want to minimize it.
+
+Two common methods:
+\begin{outline}
+    \1 \textbf{Exact:} Take derivative and set it equal to zero.
+    \1 \textbf{Gradient-based:} Iteratively follow the slope (descent/ascent).
+\end{outline}
+
+\begin{center}
+    \textit{Initial value = seed the generator}
+\end{center}
+
+\begin{center}
+\tikzset{every picture/.style={line width=0.75pt}} % set default line width to 0.75pt
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+\draw    (100,118) .. controls (140,88) and (116.86,244.29) .. (170.86,148.29) ;
+\draw    (170.86,148.29) .. controls (199.86,97.29) and (155.86,234.29) .. (208.86,160.29) ;
+\draw    (208.86,160.29) .. controls (248.86,130.29) and (213.86,316.29) .. (301.86,114.29) ;
+\draw   (139,177.6) .. controls (139,175.06) and (141.06,173) .. (143.6,173) .. controls (146.14,173) and (148.2,175.06) .. (148.2,177.6) .. controls (148.2,180.14) and (146.14,182.2) .. (143.6,182.2) .. controls (141.06,182.2) and (139,180.14) .. (139,177.6) -- cycle ;
+\draw   (176,135.6) .. controls (176,133.06) and (178.06,131) .. (180.6,131) .. controls (183.14,131) and (185.2,133.06) .. (185.2,135.6) .. controls (185.2,138.14) and (183.14,140.2) .. (180.6,140.2) .. controls (178.06,140.2) and (176,138.14) .. (176,135.6) -- cycle ;
+\draw   (181,181.6) .. controls (181,179.06) and (183.06,177) .. (185.6,177) .. controls (188.14,177) and (190.2,179.06) .. (190.2,181.6) .. controls (190.2,184.14) and (188.14,186.2) .. (185.6,186.2) .. controls (183.06,186.2) and (181,184.14) .. (181,181.6) -- cycle ;
+\draw   (214,156.6) .. controls (214,154.06) and (216.06,152) .. (218.6,152) .. controls (221.14,152) and (223.2,154.06) .. (223.2,156.6) .. controls (223.2,159.14) and (221.14,161.2) .. (218.6,161.2) .. controls (216.06,161.2) and (214,159.14) .. (214,156.6) -- cycle ;
+\draw   (241,209.6) .. controls (241,207.06) and (243.06,205) .. (245.6,205) .. controls (248.14,205) and (250.2,207.06) .. (250.2,209.6) .. controls (250.2,212.14) and (248.14,214.2) .. (245.6,214.2) .. controls (243.06,214.2) and (241,212.14) .. (241,209.6) -- cycle ;
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 },fill opacity=1 ] (106,116.6) .. controls (106,114.06) and (108.06,112) .. (110.6,112) .. controls (113.14,112) and (115.2,114.06) .. (115.2,116.6) .. controls (115.2,119.14) and (113.14,121.2) .. (110.6,121.2) .. controls (108.06,121.2) and (106,119.14) .. (106,116.6) -- cycle ;
+\end{tikzpicture}
+\end{center}
+
+
+\section{Vanilla Gradient Descent}
+
+\textbf{Update function:}
+\[
+    w_{t+1} = w_t - \gamma \nabla L(w_t)
+\]
+Where $L(w)$ is the loss function and $\gamma$ is the learning rate (hyperparameter, tunable via cross-validation).
+
+\vspace{1em}
+\textbf{Common issues:}
+\begin{outline}
+    \1 Can get stuck at a local minimum
+    \1 Vanishing gradient (especially with deep networks)
+    \1 Increasing learning rate may help escape minima, but too large a rate causes overshooting
+\end{outline}
+
+\section{Momentum}
+
+
+\textbf{Intuition:}
+\[
+    w_{t+1} = w_t - \gamma \nabla L(w_t) + \text{(past gradients)}
+\]
+
+\textbf{Actual update equations:}
+\[
+    v_0 = 0
+\]
+\[
+    v_{t+1} = \xi v_t + \nabla L(w_t)
+\]
+\[
+    w_{t+1} = w_t - \gamma v_{t+1}
+\]
+
+\textbf{Potential Issue:} May overshoot the minimum due to accumulated momentum.
+
+\textbf{Performance Metric:} \fbox{Count number of iterations until convergence}
+
+\section{Nesterov Accelerated Gradient (NAG)}
+
+\textbf{Update equations:}
+\[
+    v_0 = 0
+\]
+\[
+    v_{t+1} = \xi v_t + \nabla L(w_t)
+\]
+\[
+    w_{t+1} = w_t - \gamma (\delta v_{t+1} + \nabla L(w_t))
+\]
+
+\textbf{Key Insight:} Look ahead using $\delta v_{t+1}$ to estimate the gradient at the next position.
+\underline{Intuitive: } $w_{t+1}=w_t-\gamma \nabla L(w_t) + \text{(past gradients)}$\\
+\underline{Actual: }\boxed{v_0=0}\\ \boxed{v_{t+1}=\xi v_t + \nabla L(w_t)}
+\boxed{w_{t+1}=w_t-\gamma v_{t+1}}\\
+\underline{issue: } can move past desired point because of momentum of past gradients\\
+\underline{evaluating performance: } \fbox{Count number of iterations}\\
+
+\section{Gradient-Based Nesterov}
+\boxed{v_0=0}\\
+\boxed{v_{t+1}=\xi v_t + \nabla L(w_t)}
+\boxed{w_{t+1}=w_t-\gamma (\delta v_{t+1} + \nabla L(w_t))}\\
+look ahead : $\delta v_{t+1}$

@@ -171,16 +171,16 @@ w'^T x' = 0
 
 \section{Assumptions for the Perceptron Model}
 
-Data is Linearly Separable
+\textbf{Data is Linearly Separable}
 For the perceptron model to work, the data must be \textbf{linearly separable}. This means that a linear hyperplane exists that can perfectly separate the data points belonging to different classes. 
 
-\subsection{What is Linearly Separable?}
+\subsection{Definition of Linear Separability}
 For a dataset with inputs \( x_i \) and corresponding labels \( y_i \), where \( y_i \in \{-1, 1\} \), the data is said to be linearly separable if there exists a hyperplane represented by the equation \( w^T x + b = 0 \) such that for each data point:
 \[
 y_i (w^T x_i + b) > 0
 \]
-If \( x \) is negative, we take \( y = -1 \), making the equation \( w^T x + b > 0 \).  
-If \( x \) is positive, we take \( y = +1 \), which also makes \( w^T x + b > 0 \).
+If \( y = -1 \), then \( w^T x + b < 0 \). 
+If \( y = +1 \), then \( w^T x + b > 0 \).
 
 
 \section{Perceptron Algorithm}
@@ -200,7 +200,7 @@ Where:
 \subsection{Goal of Training}
 The objective of perceptron training is to find the optimal weight vector \( \mathbf{w} \) and bias \( b \) that minimize classification errors on the training set. 
 
-\section{Exercise: Check if \( {\bf u} = [3, -2, 1]^T \) belongs to the hyperplane}
+\section{Exercise: Verify if \( \mathbf{u} = [3, -2, 1]^T \) Lies on the Hyperplane}
 
 We are given:
 \[
@@ -220,7 +220,7 @@ Substitute the values into the equation:
 Since the result is \( 0 \), this means that \( \mathbf{u} = [3, -2, 1]^T \) lies on the hyperplane \( \mathcal{H} \).
 
 
-\subsection{Why is \( \mathbf{w} \) Perpendicular?}
+\subsection{Why the Weight Vector \( \mathbf{w} \) is Perpendicular to the Hyperplane}
 \begin{itemize}
     \item For any point \( \mathbf{x}_0 \) on the hyperplane, it satisfies the equation \( \mathbf{w}^T \mathbf{x}_0 + b = 0 \).
     \item Now, if you take any vector \( \mathbf{v} \) that lies on the hyperplane (i.e., any vector \( \mathbf{v} \) such that the line formed by \( \mathbf{x}_0 + \mathbf{v} \) also lies on the hyperplane), the following condition must hold:
@@ -263,7 +263,7 @@ Where:
         \2 If \( \mathbf{w}^T \mathbf{x} + b < 0 \), then the classifier predicts class \( -1 \).
 \end{outline}
 
-\section{Class Code(Perceptron Algorithm Steps)}
+\section{Class Code (Perceptron Algorithm Steps)}
 
 \begin{outline}
     \1 \textbf{Input:} A dataset \( D = \{(x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)\} \), where \( x_i \) is the feature vector and \( y_i \in \{-1, 1\} \) is the label for each data point.

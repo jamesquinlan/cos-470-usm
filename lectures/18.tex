@@ -1,0 +1,156 @@
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+% SUMMARY    : Backpropagation Introduction
+%            : University of Southern Maine 
+%            : @james.quinlan
+%            : Abbas Jabor, Mason Beale
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+\section*{Objectives}
+\begin{itemize}
+    \item Review calculus and chain rule
+    \item Backpropagation
+    \item Neural Network Example
+    \item Code example
+\end{itemize}
+
+\rule[0.0051in]{\textwidth}{0.00025in}
+% ----------------------------------------------------------------
+\section{Review}
+Calc $\longrightarrow$ Chain Rule $\longrightarrow$ Backprop
+
+\subsection{Derivative Rules}
+\[
+\begin{aligned}
+(f + g)' &= f' + g' \\
+(fg)' &= f' g + f g' \\
+\left( \frac{f}{g} \right)' &= \frac{f'g - fg'}{g^2} \\
+(f(g(x)))' &= f'(g(x)) \cdot g'(x) \\
+\sin'(x) &= \cos(x)
+\\
+e^{u} &\rightarrow e^{u}\cdot \frac{du}{dx} \\
+e^{-x} &\rightarrow-e^{-x} \\
+\end{aligned}
+\]
+
+\subsection{Chain Rule}
+\[
+\begin{aligned}
+    y &= f(v) \\
+    v &= g(w) \\
+    w &= h(x)
+\end{aligned}
+\quad \Rightarrow \quad
+y = f(g(h(x)))
+\]
+
+\subsection{Leibniz Notation}
+\[
+\frac{dy}{dx} = \frac{dy}{dv} \frac{dv}{dw} \frac{dw}{dx}
+\]
+How much $y$ changed based on $x$ \\
+Think of turning knobs, "how sensitive is '$y$' with respect to changes in '$x$'.
+
+\section{Activation Functions}
+
+$$\sigma(x) = \frac{1}{1+e^{-x}} = (1+e^{-x})^{-1}$$
+$$\sigma(x) = \text{relu}(x) \quad \Leftarrow\text{Another popular activation function}$$
+\\
+Show that $\sigma'(x) = \sigma(x) \cdot (1-\sigma(x))$ where $\sigma(x) = \frac{1}{1+e^{-x}}$ and $\sigma'(x) = \frac{e^{-x}}{(1+e^{-x})^2}$
+\begin{align}
+\sigma'(x) &= -1 \cdot (1+e^{-x})^{-2} \cdot (-e^{-x}) \\
+&= \frac{e^{-x}}{(1+e^{-x})^2} \\
+\\
+\sigma'(x) &= \sigma(x)(1-\sigma(x)) \\
+&= (1+e^{-x})^{-1} \cdot \left( 1 - (1+e^{-x})^{-1} \right) \\
+&= \frac{1}{1+e^{-x}} \cdot \left( \frac{1+e^{-x}}{1+e^{-x}} - \frac{1}{1+e^{-x}} \right) \\
+&= \frac{1}{1+e^{-x}} \cdot \frac{e^{-x}}{1+e^{-x}} \\
+&= \frac{e^{-x}}{(1+e^{-x})^2}
+\end{align}
+
+\section{Neural Network Example}
+This section aims to provide an example of how to train a neural network model so that the input value of 1.5 becomes the ground truth value of 0.5. The initial weight given is 0.8. With some simple calculations, we can determine that the weight we need is 1/3. In the real world, we don't know the exact weight necessary, but this is simply a test to show the use of backpropagation.
+\begin{center}
+\begin{tikzpicture}[node distance=3cm, auto]
+    % Nodes
+    \node[circle, draw, minimum size=1cm] (x) at (0,0) {X};
+    \node[circle, draw, minimum size=1cm] (y) at (4,0) {1.2};
+
+    % Edge
+    \draw[-] (x) -- node[above] {$w= 0.8$} (y);
+
+    % Labels
+    \node[left=0.2cm of x] {1.5 =};
+    \node[ right=0.2cm of y] {= a = w * x};
+
+    % Equations below
+    \node[below=1cm of $(x)!0.5!(y)$] {Output goal: $y = 0.5$, therefore $w$ must equal $1/3$};
+\end{tikzpicture}
+\end{center}
+The cost function for this is: $C = (a - y)^2$
+\\ $C$ = cost
+\\ $y$ = output goal
+\\ $a$ = $wx$ = output
+\\ $w$ = weight
+\\ $x$ = input
+\\
+\subsection{Leibniz Notation:}
+\begin{align}
+\frac{dC}{da} &= 2(a-y) = 2(a-\frac{1}{2}) = 2a-1 \\
+\frac{da}{dw} &= x \\
+\nabla_{w}C = \frac{dC}{dw} = \frac{dC}{da} \frac{da}{dw} &= (2a-1) * x \\
+&= (2wx-1)*x \\
+&= 2wx^{2}-x
+\end{align}
+$\nabla_{w}C$ (the gradient of C with respect to w) will be plugged into the optimizer function: \\
+\begin{align}
+w=w-n*\nabla_{w}C
+\end{align}
+
+
+
+\section{Code}
+\subsection{Example 1}
+\begin{verbatim}
+# Initial values
+x = 1.5
+y = 0.5
+w = 0.8
+
+sigma(z) = z
+z = w * x
+a = sigma(z)
+c(a) = (a - y)^2
+dcda(a) = 2a -1
+dadz(z) = 1
+dzdw = x
+
+z = w * z
+a = sigma(z)
+dcdw = dcda(a) * dadz(z) * dzdw
+w = w - 0.1 * dcdw
+println(w)
+\end{verbatim}
+\subsection{Example 2}
+\begin{verbatim}
+x = 1.5
+y = 0.5
+w = 0.8
+
+sigma(z) = 1/(1+exp(-z))
+z = w*x
+a = sigma(z)
+c(a) = (a-y)2
+dcda(a) = 2*a -1
+dadz(z) = sigma(z) * (1-(sigma(z))
+dzdw = x
+
+For _ = 1:100
+    z = w*z
+    a = sigma(z)
+    dcdw = dcda(a) * dadz(z) * dzdw 
+    w = w - 0.1*dcdw
+    println(w)
+    If dcdw < 1e-4
+	       break
+    end
+end
+\end{verbatim}

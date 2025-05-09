@@ -8,6 +8,13 @@ Topics in Computer Science: Mathematics of Machine Learning
 3. [Curse of Dimensionality](https://github.com/jamesquinlan/cos-470-usm/blob/main/lectures/3.tex)
 4. [Intro. to k-NN](https://github.com/jamesquinlan/cos-470-usm/blob/main/lectures/4.tex)
 5. [k-NN continued w/code](https://github.com/jamesquinlan/cos-470-usm/blob/main/lectures/5.tex)
+6. [Cross Validation & Perceptron](https://github.com/jamesquinlan/cos-470-usm/blob/main/lectures/6.tex)
+7. [Perceptron cont. Intro to SVM](https://github.com/jamesquinlan/cos-470-usm/blob/main/lectures/7.tex)
+8. [Perceptron cont. Intro to Hyperplanes](https://github.com/jamesquinlan/cos-470-usm/blob/main/lectures/8.tex)
+9. [Regression & Loss](https://github.com/jamesquinlan/cos-470-usm/blob/main/lectures/9.tex)
+10. [Margins & Lagrange Multipliers](https://github.com/jamesquinlan/cos-470-usm/blob/main/lectures/10.tex)
+11. [SVM Optimizing](https://github.com/jamesquinlan/cos-470-usm/blob/main/lectures/11.tex)
+12. [Optimizers & Intro to Intro to Backpropagation](https://github.com/jamesquinlan/cos-470-usm/blob/main/lectures/12.tex)
 
 ## Software and Platforms
 

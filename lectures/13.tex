@@ -1,3 +1,10 @@
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+% SUMMARY    : Lecture 13
+%            : University of Southern Maine 
+%            : @james.quinlan
+%            : Abby Pitcairn
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 \section*{Objectives}
 \begin{outline}
     \1 Wrap up SVM
@@ -214,5 +221,13 @@ Above, we are working with vanilla gradient descent. This can work on a simple f
 
 To get around this, we can use a more robust gradient descent like ADAM \cite{kingma2014adam}. In the next lecture, we will learn more about using gradient descents. 
 
-\bibliographystyle{plain}
-\bibliography{references}
+\begin{tcolorbox}[title=Key Terms \& Definitions, colback=gray!10, colframe=black, width=\textwidth]
+\begin{description}
+\item[Direct Method] Solving the SVM optimization problem by directly calculating $\alpha = Q^{-1} \cdot 1$. Elegant but numerically unstable.
+\item[Iterative Method] Approaching the optimal solution step-by-step using gradient-based updates.
+\item[Gradient Descent] This optimization method performs sequential movements in the descent path with maximum slope gradient.
+\item[Learning Rate ($\eta$)] A hyperparameter that controls the step size in gradient descent algorithms.
+\item[ADAM] An advanced gradient descent algorithm that adapts the learning rate for each parameter.
+\end{description}
+\end{tcolorbox}
+

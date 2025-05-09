@@ -20,7 +20,7 @@
 \section{Review}
 \subsection{SVM Margins}
 
-In the context of Support Vector Machines (SVMs), the margin refers to the distance between the hyperplane and the closest data points from each class. These closest data points are called \textit{support vectors}, and they are critical in determining the optimal decision boundary.
+In the context of Support Vector Machines (SVMs), the margin refers to the distance between the hyperplane and the closest data points of each class. These closest data points are called \textit{support vectors}, and they are critical in determining the optimal decision boundary.
 
 For a binary classification problem, the goal of an SVM is to find the hyperplane that maximizes this margin, ensuring the greatest possible separation between the two classes. A larger margin typically leads to better generalization and reduced risk of overfitting, as it implies a more confident separation of the classes.
 
@@ -31,7 +31,7 @@ Mathematically, the margin can be expressed as:
 \text{Margin} = \frac{1}{\| \mathbf{w} \|}
 \]
 
-where \( \mathbf{w} \) is the weight vector normal to the hyperplane. The margin is inversely proportional to the magnitude of \( \mathbf{w} \), meaning that to maximize the margin, we need to minimize \( \| \mathbf{w} \| \). This is achieved by finding the hyperplane that satisfies the optimal separation between the two classes while keeping the margin as large as possible. 
+where \( \mathbf{w} \) is the weight vector normal to the hyperplane. The margin is inversely proportional to the magnitude of \( \mathbf{w} \), which means that to maximize the margin, we need to minimize \( \| \mathbf{w} \| \). This is achieved by finding the hyperplane that satisfies the optimal separation between the two classes while keeping the margin as large as possible. 
 
 Note that while this is not the same as minimizing the vector \( \mathbf{w} \), the \textit{argmax} of \( \frac{1}{\| \mathbf{w} \|} \) is the same as the \textit{argmin} of \( \| \mathbf{w} \| \). For instance, if you have:
 
@@ -49,7 +49,7 @@ The objective function in SVM is to minimize the squared Euclidean norm of the w
 \[
 \min \frac{1}{2} \| \mathbf{w} \|^2
 \]
-The factor of \( \frac{1}{2} \) is introduced for convenience, as it simplifies the derivative calculations. This is a differentiable function, which allows us to apply optimization techniques like gradient descent.
+The factor of \( \frac{1}{2} \) is introduced for convenience, as it simplifies derivative calculations. This is a differentiable function that allows us to apply optimization techniques such as gradient descent.
 
 In SVM, the optimization problem is subject to the following constraint:
 \[
@@ -197,7 +197,7 @@ The gradient points in the direction of the steepest ascent, and we use it in gr
 
 \section{Gradient Descent}
 
-Once we have calculated the gradient, we can use various gradient descent techniques to optimize the weights and biases. Some common types of gradient descent include:
+Once we have calculated the gradient, we can use various gradient descent \cite{goodfellow2016deep} techniques to optimize the weights and biases. Some common types of gradient descent include:
 
 \begin{itemize}
     \item \textbf{Regular Gradient Descent:} Uses the full dataset to compute the gradient at each iteration.
@@ -208,3 +208,17 @@ Once we have calculated the gradient, we can use various gradient descent techni
     \item \textbf{RMSProp:} An adaptive learning rate algorithm that divides the gradient by an exponentially decaying average of squared gradients.
     \item \textbf{Adam (Adaptive Moments):} A combination of Momentum and RMSProp, incorporating both the first and second moments of the gradients.
 \end{itemize}
+
+\section{Summary and Key Takeaways}
+
+In this lecture, we've covered several fundamental aspects of Support Vector Machines:
+
+\begin{itemize}
+    \item \textbf{Margins}: Support vectors represent data points that maintain the maximum distance between the hyperplane and their location. The primary objective of SVMs is to maximize this separation margin.
+    \item \textbf{Objective Function}: $\min \frac{1}{2} \|\mathbf{w}\|^2$ subject to $y_i(\mathbf{w}^T\mathbf{x}_i + b) \geq 1$ for all data points.
+    \item \textbf{Support Vectors}: The critical data points that lie exactly on the margin and solely determine the decision boundary.
+    \item \textbf{Lagrange Multipliers}: The optimization problem incorporates constraints through mathematical tools that define nonzero values only for support vectors.
+    \item \textbf{Gradient Descent}: Various optimization techniques are used to find the optimal weight vector that maximizes the margin.
+\end{itemize}
+
+These concepts form the foundation of SVMs, illustrating how principles from multivariable calculus and optimization theory come together to create powerful machine learning algorithms.

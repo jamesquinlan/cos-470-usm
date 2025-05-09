@@ -23,32 +23,35 @@ Batch Gradient Descent computes gradients over the entire dataset, which ensures
 \nabla_w L(w)=\frac{1}{n}\sum_{i=1}^n\nabla_w \ell(w; x_i). 
 \]
 Its main drawbacks are slow convergence, high expense, and getting stuck in local minima.
-    \textbf{Issues with Batch Gradient Descent}
-    \begin{enumerate}
-        \item Computationally expensive
-        \begin{itemize}
-            \item Batch gradient descent computes the gradient at every single data point, which ensures points don't get passed over, but also requires a lot of needless computations
-        \end{itemize} 
-        \item Notational issues
-        \[
-        loss = l(w,x)
-        \]
-        \[
-        L(w,x) = \frac{1}{n} \sum l(w,x)
-        \]
-        \[
-        \nabla_w L(w,x)=\nabla (\frac{1}{n} \sum l(w,x)) = \frac{1}{n} \sum \nabla l(w,x)
-        \]
-        The derivative of a sum should be equal to the sum of the derivatives
-        \item Slow convergence
-        \begin{itemize}
-            \item The steps get progressively smaller
-        \end{itemize}
-        \item Gets stuck on local minimums
-    \end{enumerate}
+
+\textbf{Issues with Batch Gradient Descent}
+\begin{enumerate}
+    \item Computationally expensive
+    \begin{itemize}
+        \item Batch gradient descent computes the gradient at every single data point, which ensures points don't get passed over, but also requires a lot of needless computations
+    \end{itemize} 
+    \item Notational issues
+    \[
+    loss = l(w,x)
+    \]
+    \[
+    L(w,x) = \frac{1}{n} \sum l(w,x)
+    \]
+    \[
+    \nabla_w L(w,x)=\nabla \Bigl(\frac{1}{n} \sum l(w,x)\Bigr) = \frac{1}{n} \sum \nabla l(w,x)
+    \]
+    The derivative of a sum should be equal to the sum of the derivatives
+    \item Slow convergence
+    \begin{itemize}
+        \item The steps get progressively smaller
+    \end{itemize}
+    \item Gets stuck on local minimums
+\end{enumerate}
+
+    
     \textbf{Related Types of Gradient Descent}
     \begin{enumerate}
-        \item Stochastic Gradient Descent (SGD)
+        \item \textbf{Stochastic Gradient Descent (SGD)}
         \begin{itemize}
             \item This type of gradient descent selects a random x every time
             \[
@@ -56,7 +59,7 @@ Its main drawbacks are slow convergence, high expense, and getting stuck in loca
             \]
         \end{itemize}
 
-        \item Minibatch Gradient Descent
+        \item \textbf{Minibatch Gradient Descent}
         \begin{itemize}
             \item A combination of SGD and Batch Gradient Descent. It uses a sample of x values and selects a random value from that sample for computation.
             \item The general rule for the batch size is 32 or less.
@@ -65,7 +68,7 @@ Its main drawbacks are slow convergence, high expense, and getting stuck in loca
         batchsize \leq 32
         \]
     \end{enumerate}
-    \item Momentum
+    \item \textbf{Momentum}
     \begin{itemize}
         \item  A type of gradient descent that takes into consideration previous gradients in order to prevent getting stuck at local minimums.
         \[
@@ -128,6 +131,42 @@ Its main drawbacks are slow convergence, high expense, and getting stuck in loca
         w_{t+1} = \sum_{i=0}^{t} \beta^i(1-\beta)\nabla L_{t-i}
         \]
     \end{enumerate}
+    \begin{tcolorbox}[title=Numerical Example: Momentum in Action, colback=gray!5, colframe=black!50!gray, width=\textwidth-1cm, center]
+Consider a simple one-dimensional optimization problem where our gradient changes as follows:
+
+\begin{array}{|c|c|}
+\hline
+\text{Step } t & \nabla L_t \\
+\hline
+0 & 1.0 \\
+1 & 0.8 \\
+2 & 0.4 \\
+3 & -0.2 \\
+4 & -0.1 \\
+\hline
+\end{array}
+
+With standard gradient descent ($\alpha = 0.1$):
+\begin{align*}
+w_1 &= w_0 - 0.1 \times 1.0 = w_0 - 0.1 \\
+w_2 &= w_1 - 0.1 \times 0.8 = w_1 - 0.08 \\
+w_3 &= w_2 - 0.1 \times 0.4 = w_2 - 0.04 \\
+w_4 &= w_3 - 0.1 \times (-0.2) = w_3 + 0.02 \\
+w_5 &= w_4 - 0.1 \times (-0.1) = w_4 + 0.01
+\end{align*}
+
+With momentum ($\alpha = 0.1$, $\beta = 0.9$):
+\begin{align*}
+v_1 &= 0.9 \times 0 + 0.1 \times 1.0 = 0.1 \\
+w_1 &= w_0 - 0.1 \times 0.1 = w_0 - 0.01 \\
+v_2 &= 0.9 \times 0.1 + 0.1 \times 0.8 = 0.09 + 0.08 = 0.17 \\
+w_2 &= w_1 - 0.1 \times 0.17 = w_1 - 0.017 \\
+\text{etc.}
+\end{align*}
+
+The built-up momentum continues to steer the process along the original path through areas where the sign of the gradient changes.
+\end{tcolorbox}
+    
     \textbf{Issues with Momentum}
     \begin{enumerate}
         \item Can overshoot and miss the global minimum
@@ -149,9 +188,9 @@ Its main drawbacks are slow convergence, high expense, and getting stuck in loca
     \[
     v_{t+1}=\beta^3v_{t-2}+\beta^2(1-\beta)\nabla L_{t-2}+\beta(1-\beta)\nabla L_{t-1}+(1-\beta)\nabla L_t
     \]
-    \item RMSProp
+    \item \textbf{RMSProp}
     \begin{itemize}
-        \item A type of gradient descent that is adaptable depending on the size of the gradient
+        \item A type of gradient descent that is adaptable depending on the size of the gradient.
     \end{itemize}
     \begin{align*}
     \nabla L(w) &= \begin{bmatrix}
@@ -163,13 +202,13 @@ Its main drawbacks are slow convergence, high expense, and getting stuck in loca
     \end{align*}
     \textbf{Features of RMSProp}
     \begin{enumerate}
-        \item Weighs gradients differently in different directions
+        \item Weighs gradients differently in different directions.
         \begin{enumerate}
-            \item Large gradient $\rightarrow$ Small step
-            \item Small gradient $\rightarrow$ Large step
+            \item Large gradient $\rightarrow$ Small step.
+            \item Small gradient $\rightarrow$ Large step.
         \end{enumerate}
-        \item Learning rates are different for each component
-        \item Element wise operations
+        \item Learning rates are different for each component.
+        \item Element wise operations.
         \[
         \hspace{1.1cm} \rightarrow cross product \rightarrow vector
         \]
@@ -180,9 +219,16 @@ Its main drawbacks are slow convergence, high expense, and getting stuck in loca
         \hspace{2.3cm} \rightarrow Hadamard\ product \rightarrow vector
         \]
     \end{enumerate}
-    \item AdaGrad
-    \item NAG (Nestrov Accelerated Gradient)
-    \item Adam
+    \item \textbf{AdaGrad (Adaptive Gradient Algorithm)}
+    \begin{itemize}
+        \item Adjusts the learning rate for each parameter based on the accumulated sum of squared gradients.
+        \[
+        \alpha_t = \frac{\eta}{\sqrt{G_t}+\epsilon}
+        \]
+        \item $\eta$ represents the \textit{global} learning rate (some fixed value), $\sqrt{G_t}$ represents the sum of squared gradients for the given parameter at time $t$, and $\epsilon$ is a very small value, meant to prevent division by zero and ensuring the learning rate is always defined.
+    \end{itemize}
+    \item \textbf{NAG (Nestrov Accelerated Gradient)}
+    \item \textbf{Adam}
     \begin{itemize}
         \item Created in 2015, Adam is generally considered to be the best type of gradient descent. It takes the best features of both Momentum and RMSProp and combines them into a single type of gradient descent.
     \end{itemize}

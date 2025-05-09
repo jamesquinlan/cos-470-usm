@@ -38,7 +38,7 @@ Classification algorithms, given an input $x$, maps it to a $y$, such that
     y \in \{C_1, C_2, \dots, C_n\}.
 \]
 That is, $x$ is mapped to $C_i$, out of $n$ possible categories.
-Coincidentally, the Perceptron algorithm belongs to this category. More specifically, it is a \textit{binary classification} algorithm, where 
+Coincidentally, the Perceptron algorithm belongs to this category of algorithms. More specifically, it is a \textit{binary classification} algorithm, where 
 \[
     y \in \{-1, 1\}.
 \]
@@ -127,7 +127,7 @@ If the hyperplane is the set of all points such that $w^\perp x+b=0$, or, the se
     H = \{h_1, h_2, \dots, h_n\}.
 \]
 
-\subsection{Limitations of perceptron}
+\subsection{Limitations of Perceptron}
 \begin{itemize}
     \item Fails on non-linearly separable data.
     \item Single-layer only.
@@ -141,7 +141,7 @@ The SVM is what is known as a \textit{maximum margin classifier}, which means th
 \subsection{SVM Prerequisites}
 Before we delve into the specifics of the SVM algorithm, we must define an important linear algebra operation: \textit{projection}.
 
-In the most literal sense, 'projecting' one vector onto another gives us the magnitude of the first vector in the direction of another, as if you sat the first above the second in the same plane and shined a light over it- the projection is it's 'shadow' (like the example below).
+In the most literal sense, 'projecting' one vector onto another gives us the magnitude of the first vector in the direction of another, as if you set the first above the second in the same plane and shined a light over it- the projection is its 'shadow' (like the example below).
 
 \begin{tikzpicture}
 	\draw[->] (0, 0) -- (3, 0);
@@ -161,7 +161,7 @@ The dot product can be defined as the magnitudes of both vectors, multiplied by 
 \]
 As it so happens, $|u|cos\theta$ represents the magnitude of $u$ in the direction of $v$. For example, if $u$ and $v$ are parallel, the angle between them is zero, the cosine of zero is 1, and we get the full magnitude of $u$. If $u$ and $v$ are perpendicular, the angle between them is $\frac{\pi}{2}$, and the cosine of that is zero, so there is no magnitude of $u$ in the direction of $v$.
 
-Putting both together, we can define projection to be
+Putting both together, we can define the projection to be
 \[
     proj_vu = (\frac{u \cdot v}{|v|})\hat{v} = (\frac{u \cdot v}{|v|})\frac{v}{|v|}.
 \]
