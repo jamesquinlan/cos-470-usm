@@ -224,6 +224,9 @@ The built-up momentum continues to steer the process along the original path thr
         \item $\eta$ represents the \textit{global} learning rate (some fixed value), $\sqrt{G_t}$ represents the sum of squared gradients for the given parameter at time $t$, and $\epsilon$ is a very small value, meant to prevent division by zero and ensuring the learning rate is always defined.
     \end{itemize}
     \item \textbf{NAG (Nestrov Accelerated Gradient)}
+    \begin{itemize}
+        \item Uses a method of looking ahead at future gradients. This look ahead method allows for a lower chance of overshooting.
+    \end{itemize}
     \item \textbf{Adam}
     \begin{itemize}
         \item Created in 2015, Adam is generally considered to be the best type of gradient descent. It takes the best features of both Momentum and RMSProp and combines them into a single type of gradient descent.
