@@ -2,81 +2,142 @@
 % SUMMARY    : Dimensionality, Distance, and KNN
 %            : University of Southern Maine 
 %            : @james.quinlan
-%            : Sarah Lawrence  - Lecture 3
+%            : Sarah Lawrence  - Lecture 3 --> updated by Mohamed Noor
 %+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage{geometry}
+\usepackage{minted}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{cite}
+\usepackage{xcolor}
+\geometry{margin=1in}
+
+% Define colors for consistency in figures
+\definecolor{pointcolor}{RGB}{0,0,0}
+\definecolor{highlightcolor}{RGB}{128,0,128}
+\definecolor{specialpoint}{RGB}{255,0,0}
+\definecolor{positiveclass}{RGB}{0,128,0}
+\definecolor{negativeclass}{RGB}{255,0,0}
+
+\begin{document}
+
+\title{Dimensionality, Distance, and K-Nearest Neighbors (KNN)}
+\author{University of Southern Maine}
+\date{Sarah Lawrence - Lecture 3}
+\maketitle
+
 \section*{Objectives}
 \begin{itemize}
-  \item Dimensionality - Code Examples
-  \item Distance Explanation
-  \item Introduction to K-NN
-  \end{itemize}
+  \item Understand the concept of dimensionality and its implications in machine learning
+  \item Learn different distance metrics and their applications
+  \item Master the K-Nearest Neighbors algorithm for classification and regression
+\end{itemize}
 
 \rule[0.0051in]{\textwidth}{0.00025in}
 % ----------------------------------------------------------------
 
-\section{Review}
+\section{Review of Vector Spaces}
+\subsection{Vector Notation}
 \[
 \vec{x} \in {\mathbb{R}}^p
 \]
-Break down: 
+
 \begin{itemize}
-    \item $\vec{x}$ represents a vector. 
-    \item $\in$ represents an element belonging to a particular set. 
-    \item $\mathbb{R}$ represents the set of all real numbers. 
-    \item $p$ represents the dimension of the vector space. 
-    \item \textbf{Meaning}: $\vec{x}$ is a vector with all elements being real numbers in $p$-dimensional space. 
-    \item \textbf{Terminology}: $p$ can have other names such as Feature Space, and Factors.
+    \item $\vec{x}$ represents a vector (a data point with multiple attributes) 
+    \item $\in$ represents an element belonging to a particular set 
+    \item $\mathbb{R}$ represents the set of all real numbers 
+    \item $p$ represents the dimension of the vector space (number of features) 
+    \item \textbf{Meaning}: $\vec{x}$ is a vector with all elements being real numbers in $p$-dimensional space
+    \item \textbf{Terminology}: $p$ is also known as the Feature Space dimension, Number of Factors, or Number of Variables
 \end{itemize}
 
-Example: Column vector:
+In practice, we typically represent a vector as a column vector:
 $\vec{x} = \begin{bmatrix}
 x_1 \\
 x_2 \\
 \vdots \\
 x_p
-\end{bmatrix}$ \\
+\end{bmatrix}$ 
 
+Where each $x_i$ represents a specific feature or attribute of our data point.
+
+\subsection{Distance Fundamentals}
 \[
     d(x,y)
 \]
-\textbf{Distance metric}: Measures the distance (dissimilarity) between two points x and y. 
+\textbf{Distance metric}: Measures the dissimilarity between two points $x$ and $y$. A proper distance metric must satisfy several properties:
+\begin{itemize}
+    \item Non-negativity: $d(x,y) \geq 0$
+    \item Identity of indiscernibles: $d(x,y) = 0$ if and only if $x = y$
+    \item Symmetry: $d(x,y) = d(y,x)$
+    \item Triangle inequality: $d(x,z) \leq d(x,y) + d(y,z)$
+\end{itemize}
 
+The most common distance metric is Euclidean distance:
 \[
-    d(x,y) = ||x-y||
+    d(x,y) = ||x-y|| = \sqrt{\sum_{i=1}^{p} (x_i - y_i)^2}
 \]
-\textbf{Euclidean distance}: This is a specific type of distance metric. The straight line distance between two points in an Euclidean space. 
 
+\subsection{Dimensionality Challenges}
+When the number of dimensions is large, we encounter:
 \[
-    p>>1
+    p \gg 1
 \]
-\textbf{Meaning}: This is $p$ much greater than one. If this happens then vector x has a high number of dimensions. \\
-\textbf{Problem}: High dimensionality can cause issues like data sparsity and overfitting. Similarly, there is the ``Curse of Dimensionality". \\\\
+\textbf{Meaning}: The vector $x$ has a high number of dimensions.
 
-\section{Lecture}
-\subsection{Dimensionality}
+\textbf{Challenges}: High dimensionality introduces several problems:
+\begin{itemize}
+    \item Data sparsity: Points become increasingly distant from each other
+    \item Computational complexity: More dimensions mean more calculations
+    \item Overfitting: Models can fit noise in high-dimensional spaces
+    \item The "Curse of Dimensionality": A collection of phenomena that make analysis more difficult as dimensions increase
+\end{itemize}
 
-Two dimensional vector space:
+\section{Dimensionality in Detail}
+\subsection{Understanding the Space}
 
+Two-dimensional vector space with uniformly distributed points:
 
+\begin{center}
 \begin{tikzpicture}
-  % Draw the box
-  \draw[thick] (0,0) rectangle (4,4); 
+  % Draw the box with axis labels
+  \draw[thick] (0,0) rectangle (4,4);
+  \draw[->] (0,0) -- (4.5,0) node[right] {$x_1$};
+  \draw[->] (0,0) -- (0,4.5) node[above] {$x_2$};
 
   % Generate random dots inside the box
   \foreach \i in {1,...,100} {
-    \node[circle, fill=black, inner sep=1pt] at ({4*rnd}, {4*rnd}) {};
+    \node[circle, fill=pointcolor, inner sep=1pt] at ({4*rnd}, {4*rnd}) {};
   }
-  
+
+  % Add title
+  \node[align=center] at (2,4.5) {Uniform Distribution of Points in 2D};
 \end{tikzpicture}
+\end{center}
 
+\subsection{The Curse of Dimensionality}
+\textbf{Definition}: The "Curse of Dimensionality" refers to various phenomena that occur when analyzing data in high-dimensional spaces that do not occur in low-dimensional settings.
 
-\textbf{Curse of Dimensionality}: In a feature space with $p$ dimensions, $[0,1]^p$, full of randomly distributed points, as $p$ approaches infinity, the average distance from any given point to the closest edge decreases.\\
+\textbf{Key insight}: In a feature space with $p$ dimensions, $[0,1]^p$, filled with randomly distributed points, as $p$ increases:
+\begin{itemize}
+    \item The average distance between points increases
+    \item The average distance from any point to the nearest edge decreases
+    \item Volume concentrates near the edges and corners
+\end{itemize}
 
-Example:  High dimensionality (p value) in a two dimensional space.\\
+This effect is illustrated below, where points tend to cluster near the edges in higher dimensions:
 
+\begin{center}
 \begin{tikzpicture}
   % Draw the 4x4 box
   \draw[thick] (0,0) rectangle (4,4); 
+  \draw[->] (0,0) -- (4.5,0) node[right] {$x_1$};
+  \draw[->] (0,0) -- (0,4.5) node[above] {$x_2$};
 
   % Generate random dots near all four edges
   \foreach \i in {1,...,100} {
@@ -84,27 +145,33 @@ Example:  High dimensionality (p value) in a two dimensional space.\\
     \pgfmathsetmacro{\pos}{rnd*4} 
 
     \ifnum \edgeSelector=0
-      \node[circle, fill=black, inner sep=1pt] at (\pos, 0.2) {}; % Bottom edge
+      \node[circle, fill=pointcolor, inner sep=1pt] at (\pos, 0.2) {}; % Bottom edge
     \else
       \ifnum \edgeSelector=1
-        \node[circle, fill=black, inner sep=1pt] at (\pos, 3.7) {}; % Top edge
+        \node[circle, fill=pointcolor, inner sep=1pt] at (\pos, 3.7) {}; % Top edge
       \else
         \ifnum \edgeSelector=2
-          \node[circle, fill=black, inner sep=1pt] at (0.2, \pos) {}; % Left edge
+          \node[circle, fill=pointcolor, inner sep=1pt] at (0.2, \pos) {}; % Left edge
         \else
-          \node[circle, fill=black, inner sep=1pt] at (3.7, \pos) {}; % Right edge
+          \node[circle, fill=pointcolor, inner sep=1pt] at (3.7, \pos) {}; % Right edge
         \fi
       \fi
     \fi
   }
-\end{tikzpicture}\\\\
-\textbf{Dimensionality Reduction}: reduce the number of dimensions in a dataset while retaining as much of the relevant information as possible. \\
 
-Example: From three dimensions to two dimensions.
+  % Add title
+  \node[align=center] at (2,4.5) {Points Clustering Near Edges in Higher Dimensions};
+\end{tikzpicture}
+\end{center}
 
+\subsection{Dimensionality Reduction}
+\textbf{Definition}: Dimensionality reduction techniques aim to reduce the number of features while preserving as much relevant information as possible.
+
+Visual representation of dimensionality reduction from 3D to 2D:
+
+\begin{center}
 \begin{tikzpicture}
-
-% Coordinates
+% Coordinates for 3D cube
 \coordinate (A) at (0,0,0);
 \coordinate (B) at (4,0,0);
 \coordinate (C) at (4,3,0);
@@ -122,115 +189,136 @@ Example: From three dimensions to two dimensions.
 \draw[thick] (C) -- (G);
 \draw[thick] (D) -- (H);
 
-\begin{scope}[shift={(7,0)}]
-    % 2D box 
-    \draw[thick] (0,0) rectangle (4,3); 
-    \node at (2,1.5) {};
-\end{scope}
+% Add axis labels to 3D cube
+\draw[->] (0,0,0) -- (4.5,0,0) node[right] {$x_1$};
+\draw[->] (0,0,0) -- (0,3.5,0) node[above] {$x_2$};
+\draw[->] (0,0,0) -- (0,0,3.5) node[above] {$x_3$};
 
+% Add random points in 3D
+\foreach \i in {1,...,10} {
+    \pgfmathsetmacro{\x}{rnd*4} 
+    \pgfmathsetmacro{\y}{rnd*3}
+    \pgfmathsetmacro{\z}{rnd*3}
+    \fill[highlightcolor] (\x,\y,\z) circle (1.5pt);
+}
+
+% Add arrow and 2D projection
 \draw[->, thick] (5.2, 1.5) -- (6, 1.5);
 
-\end{tikzpicture} 
+\begin{scope}[shift={(7,0)}]
+    % 2D box with axis labels
+    \draw[thick] (0,0) rectangle (4,3);
+    \draw[->] (0,0) -- (4.5,0) node[right] {$x_1$};
+    \draw[->] (0,0) -- (0,3.5) node[above] {$x_2$};
 
-What is the size of the box $\ell$ that always has $k$ number of dots in it? \\
-Breakdown: 
+    % Add projected points in 2D
+    \foreach \i in {1,...,10} {
+        \pgfmathsetmacro{\x}{rnd*4} 
+        \pgfmathsetmacro{\y}{rnd*3}
+        \fill[highlightcolor] (\x,\y) circle (1.5pt);
+    }
+\end{scope}
+
+% Add title
+\node[align=center] at (5.5,4) {Dimensionality Reduction: 3D to 2D};
+
+\end{tikzpicture}
+\end{center}
+
+\subsection{The Box Size Problem}
+An important question in high-dimensional spaces: What is the size of the box $\ell$ that always contains exactly $k$ number of points?
+
+Key parameters:
 \begin{itemize}
-    \item $k$ = fixed number $<$ $n$ (red dots)
-    \item $n$ = number of samples (pink dots)
-    \item $p$ = dimensions
-    \item Terminology: If $p$ is $\geq 4$ it's a \textbf{hyper-cube}
+    \item $k$ = fixed number $<$ $n$ (number of points we want inside the box)
+    \item $n$ = total number of samples (total points in the space)
+    \item $p$ = number of dimensions
+    \item Terminology: If $p$ is $\geq 4$ we call it a \textbf{hyper-cube}
 \end{itemize}
 
-Example: $k = 1$, $p = 1$, $n = 3$ 
+\textbf{Example 1}: $k = 1$, $p = 1$, $n = 7$ points distributed on a line
+
 \begin{center}
     \begin{tikzpicture}
         % Draw the line segment
         \draw[thick] (0,0) -- (4,0);
-    
+
         % Add labels at 0 and 1
         \node[below] at (0,0) {0};
         \node[below] at (4,0) {1};
-    
-        % Draw small ticks at 0 and 1
+
+        % Draw small ticks and points
         \draw (0,0.1) -- (0,-0.1);
-        \draw[thick, pink] (1,0.1) -- (1,-0.1);
+        \draw[thick] (1,0.1) -- (1,-0.1);
+        \fill[pointcolor] (1,0) circle (2pt) node[above] {};
+
         \draw[thick] (1.5,0.1) -- (1.5,-0.1);
-        \draw[thick, purple] (2,0.1) -- (2,-0.1);
+
+        \draw[thick] (2,0.1) -- (2,-0.1);
+        \fill[highlightcolor] (2,0) circle (2pt) node[above] {};
+
         \draw[thick] (2.5,0.1) -- (2.5,-0.1);
-        \draw[thick, pink] (3,0.1) -- (3,-0.1);
+
+        \draw[thick] (3,0.1) -- (3,-0.1);
+        \fill[pointcolor] (3,0) circle (2pt) node[above] {};
+
         \draw (4,0.1) -- (4,-0.1);
-    
-        \node at (2, -0.5) {$\ell$}; % Bottom label
+
+        % Add the box length
+        \draw[<->] (1.5,0.5) -- (2.5,0.5);
+        \node at (2, 0.7) {$\ell$};
+
+        % Title
+        \node[align=center] at (2,-0.8) {One-dimensional example with $k=1$, $p=1$, $n=7$};
     \end{tikzpicture}
 \end{center}
 
-Example: $k = 3$, $p = 2$, $n = 100$ 
+\textbf{Example 2}: $k = 3$, $p = 2$, $n = 100$ points in a plane
+
 \begin{center}
     \begin{tikzpicture}
-    
+      % Draw outer and inner boxes
+      \draw[thick] (0,0) rectangle (4,4);
+      \draw[thick] (1,1) rectangle (3,3);
+
+      % Add axis labels
+      \draw[->] (0,0) -- (4.5,0) node[right] {$x_1$};
+      \draw[->] (0,0) -- (0,4.5) node[above] {$x_2$};
+
       % Generate 3 fixed dots inside the inner square
-    \foreach \i in {1,2,3} {
+      \foreach \i in {1,2,3} {
         \pgfmathsetmacro{\x}{1 + rnd*2} % Random x between 1 and 3
         \pgfmathsetmacro{\y}{1 + rnd*2} % Random y between 1 and 3
-        \fill[purple] (\x,\y) circle (2pt);
-    }
-    
-    % Generate 50 random dots outside the inner square but within the big box
-    \foreach \i in {1,...,100} {
+        \fill[highlightcolor] (\x,\y) circle (2pt);
+      }
+
+      % Generate random dots outside the inner square but within the big box
+      \foreach \i in {1,...,25} {
         \pgfmathsetmacro{\x}{rnd*4} % Random x within the outer box
         \pgfmathsetmacro{\y}{rnd*4} % Random y within the outer box
         % Ensure points are outside the inner box
-        \ifdim \x pt < 1 pt \fill[pink] (\x,\y) circle (2pt);
-        \else \ifdim \x pt > 3 pt \fill[pink] (\x,\y) circle (2pt);
-        \else \ifdim \y pt < 1 pt \fill[pink] (\x,\y) circle (2pt);
-        \else \ifdim \y pt > 3 pt \fill[pink] (\x,\y) circle (2pt);
+        \ifdim \x pt < 1 pt \fill[pointcolor] (\x,\y) circle (2pt);
+        \else \ifdim \x pt > 3 pt \fill[pointcolor] (\x,\y) circle (2pt);
+        \else \ifdim \y pt < 1 pt \fill[pointcolor] (\x,\y) circle (2pt);
+        \else \ifdim \y pt > 3 pt \fill[pointcolor] (\x,\y) circle (2pt);
         \fi\fi\fi\fi
-    }
-    
-      \node at (2, 0.8) {$\ell$}; % Bottom label
-      \node at (3.2, 2) {$\ell$};  % Right label
-      
-      % Draw the box
-      \draw[thick] (0,0) rectangle (4,4); 
-    
-      \draw[thick] (1,1) rectangle (3,3);
-      
+      }
+
+      % Label the box length
+      \draw[<->] (1.5,0.5) -- (2.5,0.5);
+      \node at (2, 0.7) {$\ell$};
+      \draw[<->] (0.5,1.5) -- (0.5,2.5);
+      \node at (0.7, 2) {$\ell$};
+
+      % Title
+      \node[align=center] at (2,-0.8) {Two-dimensional example with $k=3$, $p=2$, $n=100$};
     \end{tikzpicture} 
 \end{center}
 
-\pagebreak % to align description with the tikz image
+\textbf{Example 3}: $k = 3$, $p = 3$, $n = 100$ points in 3D space
 
-Example: $k = 3$, $p = 3$, $n = 100$
 \begin{center}
     \begin{tikzpicture}
-    
-    % Generate random dots inside the outer box
-    \foreach \i in {1,...,100} {
-        \pgfmathsetmacro{\x}{rnd*4} % Random x between 0 and 4
-        \pgfmathsetmacro{\y}{rnd*4} % Random y between 0 and 4
-        \pgfmathsetmacro{\z}{rnd*4} % Random z between 0 and 4
-    
-        % Ensure the dot is strictly outside the inner cube
-        \ifdim \x pt < 1 pt \fill[pink] (\x,\y,\z) circle (2pt);
-        \else \ifdim \x pt > 3 pt \fill[pink] (\x,\y,\z) circle (2pt);
-        \else \ifdim \y pt < 1 pt \fill[pink] (\x,\y,\z) circle (2pt);
-        \else \ifdim \y pt > 3 pt \fill[pink] (\x,\y,\z) circle (2pt);
-        \else \ifdim \z pt < 1 pt \fill[pink] (\x,\y,\z) circle (2pt);
-        \else \ifdim \z pt > 3 pt \fill[pink] (\x,\y,\z) circle (2pt);
-        \fi\fi\fi\fi\fi\fi
-    }
-    
-    % Generate 3 dots strictly inside the inner box
-    \foreach \i in {1,...,3} {
-        \pgfmathsetmacro{\x}{1 + rnd*2} % Random x between 1 and 3
-        \pgfmathsetmacro{\y}{1 + rnd*2} % Random y between 1 and 3
-        \pgfmathsetmacro{\z}{1 + rnd*2} % Random z between 1 and 3
-        \fill[purple] (\x,\y,\z) circle (2pt);
-    }
-    
-    \node at (1, -0.5) {$\ell$}; % Bottom label
-    \node at (3, 1.7) {$\ell$};  % Right label
-    
     % Draw the outer box
     \draw[thick] (0,0,0) -- (4,0,0) -- (4,4,0) -- (0,4,0) -- cycle;
     \draw[thick] (0,0,4) -- (4,0,4) -- (4,4,4) -- (0,4,4) -- cycle;
@@ -238,7 +326,12 @@ Example: $k = 3$, $p = 3$, $n = 100$
     \draw[thick] (4,0,0) -- (4,0,4);
     \draw[thick] (4,4,0) -- (4,4,4);
     \draw[thick] (0,4,0) -- (0,4,4);
-    
+
+    % Add axis labels
+    \draw[->] (0,0,0) -- (4.5,0,0) node[right] {$x_1$};
+    \draw[->] (0,0,0) -- (0,4.5,0) node[above] {$x_2$};
+    \draw[->] (0,0,0) -- (0,0,4.5) node[above] {$x_3$};
+
     % Draw the inner box
     \draw[thick] (1,1,1) -- (3,1,1) -- (3,3,1) -- (1,3,1) -- cycle;
     \draw[thick] (1,1,3) -- (3,1,3) -- (3,3,3) -- (1,3,3) -- cycle;
@@ -246,14 +339,45 @@ Example: $k = 3$, $p = 3$, $n = 100$
     \draw[thick] (3,1,1) -- (3,1,3);
     \draw[thick] (3,3,1) -- (3,3,3);
     \draw[thick] (1,3,1) -- (1,3,3);
-    
+
+    % Generate 3 dots strictly inside the inner box
+    \foreach \i in {1,...,3} {
+        \pgfmathsetmacro{\x}{1 + rnd*2} % Random x between 1 and 3
+        \pgfmathsetmacro{\y}{1 + rnd*2} % Random y between 1 and 3
+        \pgfmathsetmacro{\z}{1 + rnd*2} % Random z between 1 and 3
+        \fill[highlightcolor] (\x,\y,\z) circle (2pt);
+    }
+
+    % Generate random dots outside the inner box but within the outer box
+    \foreach \i in {1,...,20} {
+        \pgfmathsetmacro{\x}{rnd*4} % Random x between 0 and 4
+        \pgfmathsetmacro{\y}{rnd*4} % Random y between 0 and 4
+        \pgfmathsetmacro{\z}{rnd*4} % Random z between 0 and 4
+
+        % Ensure the dot is strictly outside the inner cube
+        \ifdim \x pt < 1 pt \fill[pointcolor] (\x,\y,\z) circle (2pt);
+        \else \ifdim \x pt > 3 pt \fill[pointcolor] (\x,\y,\z) circle (2pt);
+        \else \ifdim \y pt < 1 pt \fill[pointcolor] (\x,\y,\z) circle (2pt);
+        \else \ifdim \y pt > 3 pt \fill[pointcolor] (\x,\y,\z) circle (2pt);
+        \else \ifdim \z pt < 1 pt \fill[pointcolor] (\x,\y,\z) circle (2pt);
+        \else \ifdim \z pt > 3 pt \fill[pointcolor] (\x,\y,\z) circle (2pt);
+        \fi\fi\fi\fi\fi\fi
+    }
+
+    % Label the box length
+    \draw[<->] (1.5,0.5,0) -- (2.5,0.5,0);
+    \node at (2, 0.7, 0) {$\ell$};
+
+    % Title
+    \node[align=center] at (2,-1.0,0) {Three-dimensional example with $k=3$, $p=3$, $n=100$};
     \end{tikzpicture}
 \end{center}
 
-What are the volumes of the boxes?
+\subsection{Volume Analysis}
+What are the volumes of the boxes in different dimensions?
 \[
     \begin{aligned}
-        \text{Outter Box Volumes:} \quad\\
+        \text{Outer Box Volumes:} \quad\\
         \text{For } p=1: \quad & V_{\text{big}} = 1 \\
         \text{For } p=2: \quad & V_{\text{big}} = 1 \\
         \text{For } p=3: \quad & V_{\text{big}} = 1 \\
@@ -271,296 +395,274 @@ What are the volumes of the boxes?
     \end{aligned}
 \]
 
-Volume calculation:
-\[
-    \left(\frac{\ell}{1}\right)^p = \ell^p \approx \frac{k}{n}
-\]
-$k$ = a fixed number $<$ $n$ \\
+\section{Distance Metrics Implementation}
+\subsection{Code Examples in Julia}
+The following code examples demonstrate how to calculate different distance metrics and explore the effects of dimensionality using Julia.
 
-Answer to the first question: \\
-How to know $\ell$ size? Solve algebraically.
-
-\[
-    \ell \approx \left(\frac{k}{n}\right)^\frac{1}{p}
-\]
-
-\subsection{Code}
-Language: Julia\\
-Platform: Jupyter notebook\\\\\\\\
-Code:\\
-
-%--------------------------------------------------------------------------
-% Jupyter Notebook format for code portion
-\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt]
+\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt, title=\textbf{Import required packages}]
   \begin{minted}[fontsize=\small]{julia}
+    # Import the Distances package for various distance metrics
     using Distances
+
+    # Import LinearAlgebra for norm calculations
     using LinearAlgebra 
   \end{minted}
 \end{tcolorbox}
 
-\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt]
+\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt, title=\textbf{Create two random 2D points}]
   \begin{minted}[fontsize=\small]{julia}
+    # Generate a random 2D point
     x = rand(2) 
-  \end{minted}
-\end{tcolorbox}
-% Output
-\footnotesize
-\vspace{-4mm} % Move text higher
-\begin{verbatim}
-  2-element Vector{Float64}:
-    0.11715724827332152
-    0.8703834178825096
-\end{verbatim}
 
-\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt]
-  \begin{minted}[fontsize=\small]{julia}
+    # Output will be something like:
+    # 2-element Vector{Float64}:
+    #   0.11715724827332152
+    #   0.8703834178825096
+
+    # Generate another random 2D point
     y = rand(2)
+
+    # Output will be something like:
+    # 2-element Vector{Float64}:
+    #   0.983074530416966
+    #   0.9654697003440244
   \end{minted}
 \end{tcolorbox}
-% Output
-\footnotesize
-\vspace{-4mm}
-\begin{verbatim}
-  2-element Vector{Float64}:
-    0.983074530416966
-    0.9654697003440244
-\end{verbatim}
 
-\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt]
+\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt, title=\textbf{Calculate different distance metrics}]
   \begin{minted}[fontsize=\small]{julia}
-    Euclidean()(x,y)
+    # Calculate Euclidean distance between x and y
+    # This is the square root of the sum of squared differences
+    euclidean_distance = Euclidean()(x,y)
+    # Output: 0.8711223453840379
+
+    # Calculate Minkowski distance with p=2 (equivalent to Euclidean)
+    minkowski_distance = Minkowski(2)(x,y)
+    # Output: 0.8711223453840379
+
+    # Calculate Hamming distance (counts the number of differences)
+    hamming_distance = Hamming()(x,y)
+    # Output: 2 (both elements are different)
+
+    # Alternative way to calculate Euclidean distance using norm
+    norm_distance = norm(x-y)
+    # Output: 0.8711223453840379
   \end{minted}
 \end{tcolorbox}
-% Output
-\footnotesize
-\vspace{-4mm}
-\begin{verbatim}
-  0.8711223453840379
-\end{verbatim}
 
-\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt]
+\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt, title=\textbf{Implementing the box size formula}]
   \begin{minted}[fontsize=\small]{julia}
-    Minkowski(2)(x,y)
-  \end{minted}
-\end{tcolorbox}
-% Output
-\footnotesize
-\vspace{-4mm}
-\begin{verbatim}
-  0.8711223453840379
-\end{verbatim}
+    # Define the function for calculating box side length
+    # This implements our formula: ℓ = (k/n)^(1/p)
+    L(p) = @. (k/n)^(1/p)
 
-\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt]
-  \begin{minted}[fontsize=\small]{julia}
-    Hamming()(x,y)
-  \end{minted}
-\end{tcolorbox}
-% Output
-\footnotesize
-\vspace{-4mm}
-\begin{verbatim}
-  2
-\end{verbatim}
+    # Define a range of dimensions to explore
+    p = [1, 2, 3, 10, 20, 100]
 
-\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt]
-  \begin{minted}[fontsize=\small]{julia}
-    norm(x-y)
-  \end{minted}
-\end{tcolorbox}
-% Output
-\footnotesize
-\vspace{-4mm}
-\begin{verbatim}
-  0.8711223453840379
-\end{verbatim}
+    # Set number of total points and desired points inside box
+    n = 1000  # Total number of points
+    k = 11    # Desired number of points inside box
 
-\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt]
-  \begin{minted}[fontsize=\small]{julia}
-    L(p)=@. (k/n)^(1/p)
-  \end{minted}
-\end{tcolorbox}
-% Output
-\footnotesize
-\vspace{-4mm}
-\begin{verbatim}
-  L (generic function with 1 method)
-\end{verbatim}
-
-\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt]
-  \begin{minted}[fontsize=\small]{julia}
-    p=[1,2,3,10,20,100]
-  \end{minted}
-\end{tcolorbox}
-% Output
-\footnotesize
-\vspace{-4mm}
-\begin{verbatim}
-  6-element Vector{Int64}:
-     1
-     2
-     3
-    10
-    20
-   100
-\end{verbatim}
-
-\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt]
-  \begin{minted}[fontsize=\small]{julia}
-    n=1000
-    k=11
+    # Calculate box side length for each dimension
     L.(p)
+
+    # Output:
+    # 6-element Vector{Float64}:
+    #  0.011                 # For p=1
+    #  0.10488088481701516   # For p=2
+    #  0.22239800905693158   # For p=3
+    #  0.6369997597182926    # For p=10
+    #  0.7981226470400978    # For p=20
+    #  0.9559032250692122    # For p=100
+
+    # Notice how the box size approaches 1 as dimensions increase!
   \end{minted}
 \end{tcolorbox}
-% Output
-\footnotesize
-\vspace{-4mm}
-\begin{verbatim}
-  6-element Vector{Float64}:
-   0.011
-   0.10488088481701516
-   0.22239800905693158
-   0.6369997597182926
-   0.7981226470400978
-   0.9559032250692122
-\end{verbatim}
 
-\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt]
+\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt, title=\textbf{Experiment: Average distance in high dimensions}]
   \begin{minted}[fontsize=\small]{julia}
-    N = 500
-    d = 5
-    D = 0.0 # distance
-    for _=1:N
-      x = rand(d)
-      y = rand(d)
-      D += norm(x - y)
+    # Experiment to show how average distance grows in higher dimensions
+    N = 500      # Number of point pairs
+    d = 5        # Number of dimensions
+    D = 0.0      # Sum of distances (initialize to zero)
+
+    # Generate N pairs of random points and calculate average distance
+    for _ = 1:N
+      x = rand(d)  # Random point in d-dimensional space
+      y = rand(d)  # Another random point
+      D += norm(x - y)  # Add Euclidean distance to total
     end
 
+    # Print total sum of distances
     println(D)
+    # Output: 450.01189208407664
+
+    # Average distance would be D/N (approximately 0.90 for d=5)
+    # This value grows as d increases!
   \end{minted}
 \end{tcolorbox}
-% Output
-\footnotesize
-\vspace{-4mm}
-\begin{verbatim}
-  450.01189208407664
-\end{verbatim}
 
-\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt]
+\begin{tcolorbox}[width=\textwidth, left=-6mm, sharp corners, boxrule=0pt, title=\textbf{ Experiment: Distance to nearest edge}]
   \begin{minted}[fontsize=\small]{julia}
-    # Computes the minimum distance of the max norm from 0 and 1 for 100 random vectors.
+    # This computes the minimum distance from random points to nearest edge
+    # using infinity norm (maximum coordinate distance to edge)
     for _ = 1:100
-      x = rand(d)
-      min(1-norm(x,Inf), norm(x,Inf))
+      x = rand(d)  # Generate random point in d-dimensional unit hypercube
+
+      # Calculate min distance to edge using infinity norm
+      # For each coordinate, the distance to edge is min(xi, 1-xi)
+      edge_distance = min(1-norm(x,Inf), norm(x,Inf))
+
+      # As d increases, this distance tends to decrease!
     end
   \end{minted}
 \end{tcolorbox}
-%--------------------------------------------------------------------------
 
-\subsection{Distance}
-\textbf{Divergence}: The distance between two points increases infinitely.\\
-\textbf{Converging}: The distance between two points converges to zero. \\
+\section{Distance Metrics in Detail}
+\subsection{Properties of Distance}
+When analyzing distances in spaces, we can encounter different behaviors:
 
-Example: The left box shows divergence. The right box shows convergence.\\
+\textbf{Divergence}: The distance between two points increases infinitely.
+
+\textbf{Convergence}: The distance between two points converges to zero.
+
+This is illustrated below:
+
+\begin{center}
 \begin{tikzpicture}
-
-  \filldraw[black] (1.1,1.1) circle (2pt) node[below] {A};
-  \filldraw[black] (2.9,2.9) circle (2pt) node[above] {B}; 
-  \filldraw[black] (5.9,1.9) circle (2pt) node[below] {A};
-  \filldraw[black] (6.1,2.1) circle (2pt) node[above] {B}; 
-
-
-  % Draw a line between the two dots
-  \draw[thick, purple] (1,1) -- (3,3);
-  \draw[thick, purple] (5.9,1.9) -- (6.1,2.1);
-
-  % Draw the box
+  % Draw the first box (divergence)
   \draw[thick] (1,1) rectangle (3,3);
+  \node[align=center] at (2,0.5) {Diverging points};
+
+  % Add points and distances
+  \filldraw[black] (1.1,1.1) circle (2pt) node[below left] {A};
+  \filldraw[black] (2.9,2.9) circle (2pt) node[above right] {B}; 
+  \draw[thick, highlightcolor] (1.1,1.1) -- (2.9,2.9);
+  \draw[<->] (1.3,1.3) -- (2.7,2.7);
+  \node[highlightcolor] at (2,2.2) {Large distance};
+
+  % Draw the second box (convergence)
   \draw[thick] (5,1) rectangle (7,3);
-  
-\end{tikzpicture} \\
+  \node[align=center] at (6,0.5) {Converging points};
 
-Question: Cosine distance is not a distance: why?
-Because it is not nonnegative. 
+  % Add points and lines for convergence
+  \filldraw[black] (5.9,1.9) circle (2pt) node[below left] {A};
+  \filldraw[black] (6.1,2.1) circle (2pt) node[above right] {B}; 
+  \draw[thick, highlightcolor] (5.9,1.9) -- (6.1,2.1);
+  \node[highlightcolor] at (6,1.7) {Small distance};
 
-Question: What's the minimum distance to an edge? \\\\
-\begin{tikzpicture}
+\end{tikzpicture}
+\end{center}
 
+\subsection{Important Properties of Distance Metrics}
+Not all mathematical functions that measure "difference" qualify as proper distance metrics. For example:
 
-  % Draw a line between the two dots
-  \draw[thick, purple] (1.9,3) -- (1.9,1);
-  \draw[thick, purple] (3,1.9) -- (1,1.9);
+\textbf{Question}: Why is cosine distance not a true distance metric?
 
-  \filldraw[black] (1.9,1.9) circle (2pt) node[below] {};
-
-  % Draw the box
-  \draw[thick] (1,1) rectangle (3,3);
-
-  \draw[->, thick] (3.5, 1.9) -- (4.3, 1.9);
-  \node at (5.3, 1.9) {\Huge ?};
-  
-\end{tikzpicture} \\\\
-To find the minimum distance we use norms ($||x||$). There are different types of norms, like:
-Euclidean norms\\
-Infinity norms\\
-$\dots$ \\
-
-\subsection{K-NN}
-Meaning: K-NN is K-Nearest Neighbor
-
-How it works: 
-\begin{outline}[enumerate]
-    \1  Have a data point. 
-    \1 Find the distance between the point and all the data points. Euclidean metric is the most common.
-    \1 Sort the distances
-    \1 Select K Neighbors with the smallest distances from the point.
-    \1 Perform the average, or mode.
-\end{outline}
-
-Why does it work?
-
-Because not assuming the numbers are uniform will prevent the curse of dimensionality. \\
-
-Class demonstration: Don't follow the pattern\\
-\begin{tikzpicture}
-
-  % Draw a graph 
-  \draw[thick] (1,5) -- (1,1);
-  \draw[thick] (1,1) -- (6,1);
-
-   \filldraw[black] (1.5,2) circle (2pt) node[below] {};
-    \filldraw[black] (2,2.5) circle (2pt) node[below] {};
-    \filldraw[black] (2.7,2.5) circle (2pt) node[below] {};
-    \filldraw[black] (3.2,2) circle (2pt) node[below] {};
-    \filldraw[red] (3.8,1.6) circle (2pt) node[below] {};
-    \filldraw[black] (4.4,1.8) circle (2pt) node[below] {};
-    \filldraw[black] (4.9,2.2) circle (2pt) node[below] {};
-
-    % x1 marker
-    \filldraw[purple] (2.4,2) circle (2pt) node[below] {};
-    \draw[thick, purple] (2.4,1.2) -- (2.4,1);
-    \node[below] at (2.5,1) {\(x_1\)};
-    
-    % x2 marker
-    \node[purple] at (3.3, 3) {\small ?};
-    \draw[thick, purple] (3.3,1.2) -- (3.3,1);
-    \node[below] at (3.3,1) {\(x_2\)};
-
-    % x3 marker
-     \draw[thick, red] (3.8,1.2) -- (3.8,1);
-    \node[below] at (3.8,1) {\(x_3\)};
-
-\end{tikzpicture} \\
-
-Limitations: If dimensions increase then it's not Nearest Neighbor. \\
-
-K-NN is used for: 
+\textbf{Answer}: Cosine distance violates several properties required for a true metric:
 \begin{itemize}
-    \item Binary Classification
-    \item Regression
+    \item It doesn't satisfy the triangle inequality
+    \item It doesn't satisfy the identity of indiscernibles (two different vectors can have a cosine distance of 0 if they point in the same direction but have different magnitudes)
 \end{itemize}
-Question: What do you do with missing data?
 
-Example:
+\section{K-Nearest Neighbors (KNN) Algorithm}
+\subsection{Introduction to K-NN}
+
+\textbf{Definition}: K-Nearest Neighbors (K-NN) is a non-parametric, instance-based learning algorithm used for both classification and regression.
+
+\textbf{Core idea}: Objects are classified based on the majority class among their k nearest neighbors or prediction is made based on the average value of their k nearest neighbors.
+
+\subsection{K-NN Algorithm Steps}
+\begin{enumerate}
+    \item Choose a value for K (the number of neighbors)
+    \item Calculate the distance between the query point and all training points
+    \item Sort the distances and determine the K nearest neighbors
+    \item For classification: use majority voting among the K neighbors
+    \item For regression: use the average (or weighted average) of the K neighbors
+\end{enumerate}
+
+\subsection{Why K-NN Works}
+K-NN is effective because:
+\begin{itemize}
+    \item It makes minimal assumptions about the underlying data distribution (non-parametric)
+    \item It can adapt to complex decision boundaries
+    \item It works well when data points from the same class form cohesive clusters
+    \item By considering multiple neighbors, it reduces sensitivity to noise
+\end{itemize}
+
+In high-dimensional spaces, K-NN can still work effectively if the data points are not uniformly distributed, which helps mitigate the curse of dimensionality.
+
+\subsection{K-NN Classification Example}
+Consider the following scenario: Is the point marked with \textcolor{red}{?} positive or negative?
+
+Parameters: $K = 3$ (we'll consider 3 nearest neighbors), $p = 2$ (2D space), $n = 16$ (16 total points)
+
+\begin{center}
+\begin{tikzpicture}
+  % Draw axes
+  \draw[->] (1,1) -- (6,1) node[right] {$x_1$};
+  \draw[->] (1,1) -- (1,5) node[above] {$x_2$};
+
+  % Plot positive and negative points
+  \node[positiveclass] at (2.1, 2) {+};
+  \node[positiveclass] at (5, 1.3) {+};
+  \node[negativeclass] at (1.4, 2.9) {-};
+  \node[negativeclass] at (5, 4) {-};
+  \node[positiveclass] at (3.5, 4.5) {+};
+  \node[positiveclass] at (2.3, 2.5) {+};
+  \node[positiveclass] at (4.5, 2.5) {+};
+  \node[negativeclass] at (3.3, 1.5) {-};
+  \node[negativeclass, circle, draw] at (3.3, 3.5) {-};
+  \node[positiveclass] at (2.2, 4) {+};
+  \node[positiveclass] at (2.8, 4.5) {+};
+  \node[positiveclass] at (1.8, 4.5) {+};
+  \node[negativeclass] at (1.3, 1.5) {-};
+  \node[positiveclass, circle, draw] at (3, 3) {+};
+  \node[negativeclass, circle, draw] at (4, 3) {-};
+  \node[negativeclass] at (3, 2) {-};
+
+  % Plot the query point
+  \node[specialpoint, font=\large] at (3.5, 3) {?};
+
+  % Draw circles around the three nearest neighbors
+  \draw[dashed, specialpoint] (3.5,3) circle (0.7);
+
+  % Add legend
+  \node[anchor=west] at (4.5,4.5) {K=3 neighbors};
+  \draw[dashed, specialpoint] (4.3,4.5) -- (4.7,4.5);
+
+\end{tikzpicture}
+\end{center}
+
+\textbf{Analysis}: The three nearest neighbors to the query point (?) are:
+\begin{itemize}
+    \item One positive point (+)
+    \item Two negative points (-)
+\end{itemize}
+
+\textbf{Prediction}: Since the majority (2 out of 3) of the nearest neighbors are negative, we classify the query point as negative.
+
+\subsection{Choosing K}
+The choice of K is crucial in K-NN:
+\begin{itemize}
+    \item Smaller K values: More sensitive to noise, but can capture fine-grained patterns
+    \item Larger K values: More robust to noise, but may miss local patterns
+    \item For classification tasks, K should be odd to avoid ties
+    \item Common practice: Try different K values using cross-validation
+\end{itemize}
+
+\subsection{Computational Complexity}
+K-NN has the following computational requirements:
+\begin{enumerate}
+    \item Calculation of distances between query point and all training points: $O(np)$ where $n$ is the number of training points and $p$ is the number of features
+    \item Sorting distances to find K nearest neighbors: $O(n \log n)$
+    \item Selecting K nearest neighbors: $O(K)$
+\end{enumerate}
+
+Overall complexity: $O(np + n \log n + K) \approx O(np + n \log n)$ since typically $K \ll n$.
+
+\subsection{Handling Missing Data with K-NN}
+Missing data is a common problem in real-world datasets. Consider a vector with missing values:
 \[
     \begin{bmatrix}
         1 \\
@@ -573,65 +675,32 @@ Example:
     \end{bmatrix}
 \] 
 
-Methods:
-\begin{outline}[enumerate]
-    \1 delete it 
-    \1 mean or median 
-    \1 K-NN (take the nearest neighbors and their average)
-\end{outline}
+There are several approaches to handle missing values:
+\begin{enumerate}
+    \item Delete records with missing values (simple but loses information)
+    \item Replace with mean or median of the feature (fast but ignores correlations)
+    \item Use K-NN imputation:
+        \begin{itemize}
+            \item Find K nearest neighbors based on non-missing features
+            \item Replace missing values with the average from these neighbors
+            \item This preserves relationships between features
+        \end{itemize}
+\end{enumerate}
 
-Example: Maine is missing temperature data. Taking the mean won't work since places like Texas and Arizona will effect the results. \\
+\textbf{Example}: If Maine is missing temperature data, taking the mean of all states would be biased by warm states like Texas and Arizona. Instead, K-NN would use temperatures from nearby northeastern states like New Hampshire and Vermont, providing a more accurate estimate.
 
-How to solve this problem? \\
-Use K-NN. Do this by taking the temperatures of the closest states and perform the average. 
-
-\textbf{K-NN setup}: 
+\subsection{Formal K-NN Setup}
+Mathematically, we can define the K-NN setup as:
 \[
-    \textrm{Data} = D ={(x_i,y_i)}^n \leq \mathbb{R}^px(-1,1)
+    \text{Data} = D = \{(x_i,y_i)\}^n_{i=1} \subset \mathbb{R}^p \times \{-1,1\}
 \]
-\[
-    x\in \mathbb{R}^p \textrm{ and } y=-1 \textrm{ or } y=1
-\]
+where:
+\begin{itemize}
+    \item $x_i \in \mathbb{R}^p$ are feature vectors
+    \item $y_i \in \{-1,1\}$ are binary class labels (can be extended to multi-class)
+    \item $n$ is the number of training examples
+    \item $p$ is the number of features
+\end{itemize}
 
-Rule:
-$K$ always needs to be an odd number for classification. This is to prevent a tie from occurring.
 
-Example: Is \textcolor{red}{?} positive or negative? \\
-$K = 3$, $p = 2$, $n = 16$
-
-\begin{tikzpicture}
-
-  % Draw a graph 
-  \draw[thick] (1,5) -- (1,1);
-  \draw[thick] (1,1) -- (6,1);
-  
-  \node[thick, red] at (3.5, 3) {?};
-  \node[black] at (2.1, 2) {-};
-  \node[black] at (5, 1.3) {+};
-  \node[black] at (1.4, 2.9) {-};
-  \node[black] at (5, 4) {-};
-  \node[black] at (5, 4) {-};
-  \node[black] at (3.5, 4.5) {+};
-  \node[black] at (2.3, 2.5) {+};
-  \node[black] at (4.5, 2.5) {+};
-  \node[black] at (3.3, 1.5) {-};
-  \node[circle, draw] at (3.3, 3.5) {-};
-  \node[black] at (2.2, 4) {+};
-  \node[black] at (2.8, 4.5) {+};
-  \node[black] at (1.8, 4.5) {+};
-  \node[black] at (1.3, 1.5) {-};
-  \node[circle, draw] at (3, 3) {+};
-  \node[circle, draw] at (4, 3) {-};
-  \node[black] at (3, 2) {-};
-   
-\end{tikzpicture} 
-
-Answer: The k = 3 closest are a positive negative and negative. Since there are two negatives we assume the \textcolor{red}{?} is negative. \\
-
-Order:
-\begin{outline}
-    \1 Calculation of distance: $O(np)$
-    \1 Sort distances: $O(n log n)$
-    \1 Pick k that are the smallest: $O(k)$
-\end{outline}
-
+\end{document}
