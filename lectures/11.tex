@@ -1,24 +1,40 @@
 %+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-% SUMMARY    : Lecture 11
-%            : Optimization & SVMs -- Deriving the Loss function
+% SUMMARY    : Lecture 11 (Revised)
+%            : Optimization & SVMs -- Deriving the Loss Function
 %            : University of Southern Maine 
 %            : @james.quinlan
-%            : @abdirahman.mohamed, Wyatt McCurdy
+%            : @abdirahman.mohamed, Wyatt McCurdy -> Modified by Mohamed Noor
 %+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-\section*{Objectives}
-\begin{outline}
-    \1 Understand monotonic functions and their properties.
-    \1 Learn the formulation of SVMs through maximum margin optimization.
-    \1 Study Lagrange multipliers in constrained optimization.
-    \1 Explore gradients, partial derivatives, and various gradient descent methods.
-    \1 Understand the primal problem (objective function) of SVMs.
-    \1 Understand the dual problem using Lagrange multipliers.
-    \1 Practice computing the gradient.
-\end{outline}
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=1in}
 
-\rule[0.0051in]{\textwidth}{0.00025in}
-% ----------------------------------------------------------------
+% Define macros for summations
+\newcommand{\sumi}{\sum_{i=1}^n}
+\newcommand{\sumij}{\sum_{i=1}^n \sum_{j=1}^n}
+
+\title{Lecture 11: Optimization and SVMs}
+\author{University of Southern Maine}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Objectives}
+\begin{itemize}
+    \item Understand monotonic functions and their properties.
+    \item Learn the formulation of SVMs through maximum margin optimization.
+    \item Study Lagrange multipliers in constrained optimization.
+    \item Explore gradients, partial derivatives, and various gradient descent methods.
+    \item Understand the primal problem (objective function) of SVMs.
+    \item Understand the dual problem using Lagrange multipliers.
+    \item Practice computing the gradient.
+\end{itemize}
 
 \section{Mathematics and SVM Optimization}
 
@@ -54,105 +70,80 @@
     \]
     \item \textbf{Constraints:} For every sample \((x_i, y_i)\),
     \[
-    y_i (w^T x_i + b) \geq 1,
-    \]
-    or equivalently,
-    \[
-    y_i (w^T x_i + b) - 1 \geq 0.
+    y_i (w^T x_i + b) \geq 1, \quad \text{or} \quad y_i (w^T x_i + b) - 1 \geq 0.
     \]
 \end{itemize}
 
 \subsection{Lagrange Multipliers and the Dual Problem}
 \begin{itemize}
-    \item \textbf{Purpose:} Incorporate inequality constraints into the optimization problem.
-    \item \textbf{Method:} Multiply each constraint by a Lagrange multiplier \(\alpha_i \geq 0\):
-    \[
-    \alpha_i \bigl( y_i (w^T x_i + b) - 1 \bigr).
-    \]
+    \item \textbf{Purpose:} Incorporate inequality constraints into the optimization problem using Lagrange multipliers.
+    \item \textbf{Why move to the dual?}
+
+    Solving the primal problem directly can be challenging when the number of constraints is large. The dual problem transforms the constraints into a form that allows us to apply kernel methods and often simplifies computation. It also allows the use of inner products \( x_i^T x_j \), which is especially useful in high-dimensional feature spaces.
+
     \item \textbf{Lagrangian Formulation:}
     \[
-    L(w, b, \alpha) = \frac{1}{2}\|w\|^2 - \sum_{i=1}^{n} \alpha_i \bigl( y_i (w^T x_i + b) - 1 \bigr).
+    L(w, b, \alpha) = \frac{1}{2}\|w\|^2 - \sumi \alpha_i \left( y_i (w^T x_i + b) - 1 \right).
     \]
-    \item \textbf{Dual Problem:} By taking derivatives with respect to \(w\) and \(b\) and setting them to zero, we obtain:
+
+    \item \textbf{Compute Gradients and Set to Zero:}
+    \begin{align}
+        \frac{\partial L}{\partial w} &= w - \sumi \alpha_i y_i x_i = 0 \quad \Rightarrow \quad w = \sumi \alpha_i y_i x_i, \\
+        \frac{\partial L}{\partial b} &= -\sumi \alpha_i y_i = 0 \quad \Rightarrow \quad \sumi \alpha_i y_i = 0.
+    \end{align}
+
+    \item \textbf{Dual Problem:} Substituting \( w = \sumi \alpha_i y_i x_i \) back into \( L \), the dual objective becomes:
     \[
-    w = \sum_{i=1}^{n} \alpha_i y_i x_i \quad \text{and} \quad \sum_{i=1}^{n} \alpha_i y_i = 0.
+    \max_{\alpha} \quad \sumi \alpha_i - \frac{1}{2} \sumij \alpha_i \alpha_j y_i y_j x_i^T x_j,
     \]
-    Substituting \(w\) back into the loss function leads to the dual formulation:
-    % Dual objective: maximize this quadratic function to find optimal α
     \[
-    \max_{\alpha} \sum_{i=1}^{n} \alpha_i - \frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_i \alpha_j y_i y_j x_i^T x_j.
+    \text{subject to:} \quad \alpha_i \geq 0 \quad \text{and} \quad \sumi \alpha_i y_i = 0.
     \]
 \end{itemize}
 
 \section{Computing the Gradient}
 
-The loss function for SVMs is given by:
+\subsection{Loss Function}
 \[
-L = \frac{1}{2}\|w\|^2 - \sum_{i=1}^{n} \alpha_i \bigl( y_i (w^T x_i + b) - 1 \bigr).
+L = \frac{1}{2}\|w\|^2 - \sumi \alpha_i \left( y_i (w^T x_i + b) - 1 \right).
 \]
 
-\subsection{The Left-hand Derivative}
-The derivative of \(\frac{1}{2}\|w\|^2\) with respect to \(w\) is:
+\subsection{Gradients}
+\begin{align}
+    \frac{\partial}{\partial w} \left( \frac{1}{2}\|w\|^2 \right) &= w, \\
+    \frac{\partial}{\partial w} \sumi \alpha_i y_i w^T x_i &= \sumi \alpha_i y_i x_i, \\
+    \frac{\partial}{\partial b} \sumi \alpha_i y_i b &= \sumi \alpha_i y_i.
+\end{align}
+
+Setting gradients to zero:
 \[
-\frac{\partial \left(\frac{1}{2}\|w\|^2\right)}{\partial w} = w.
+w = \sumi \alpha_i y_i x_i, \quad \sumi \alpha_i y_i = 0.
 \]
 
-\subsection{The Right-hand Derivative}
-For the term 
-\[
-\sum_{i=1}^{n} \alpha_i (y_i(w^T x_i + b) - 1),
-\]
-the derivative with respect to \(w\) is:
-\[
-\frac{\partial}{\partial w} \sum_{i=1}^{n} \alpha_i y_i w^T x_i = \sum_{i=1}^{n} \alpha_i y_i x_i.
-\]
-Similarly, the derivative with respect to \(b\) is:
-\[
-\frac{\partial}{\partial b} \sum_{i=1}^{n} \alpha_i y_i b = \sum_{i=1}^{n} \alpha_i y_i.
-\]
-
-Setting these derivatives equal to zero yields:
-\[
-w = \sum_{i=1}^{n} \alpha_i y_i x_i \quad \text{and} \quad \sum_{i=1}^{n} \alpha_i y_i = 0.
-\]
-
-Substituting \(w\) back into the loss function gives:
-\[
-L = \sum_{i=1}^{n} \alpha_i - \frac{1}{2}\, w^T w,
-\]
-which, after replacing \(w\) with \(\sum_{i=1}^{n} \alpha_i y_i x_i\), becomes:
-\[
-L = \sum_{i=1}^{n} \alpha_i - \frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \alpha_i \alpha_j y_i y_j x_i^T x_j.
-\]
+Substitute back into the loss:
+\begin{align}
+    L &= \sumi \alpha_i - \frac{1}{2} w^T w \\
+      &= \sumi \alpha_i - \frac{1}{2} \left( \sumi \alpha_i y_i x_i \right)^T \left( \sum_{j=1}^n \alpha_j y_j x_j \right) \\
+      &= \sumi \alpha_i - \frac{1}{2} \sumij \alpha_i \alpha_j y_i y_j x_i^T x_j.
+\end{align}
 
 \begin{tcolorbox}
-\textbf{XPL1}: Demonstrate that 
+\textbf{XPL1:} Demonstrate that 
 \[
-\sum_{i=1}^n \alpha_i \sum_{j=1}^n \beta_j = \sum_{i=1}^n \sum_{j=1}^n \alpha_i\beta_j.
+\sumi \sum_{j=1}^n \alpha_i \beta_j = \sumij \alpha_i \beta_j.
 \]
-\end{tcolorbox}
-
-\begin{tcolorbox}
-\textbf{Answer to XPL1}: 
-
-We expand the left-hand side:
-\[
-\sum_{i=1}^n \alpha_i \sum_{j=1}^n \beta_j = \sum_{i=1}^n \left( \sum_{j=1}^n \alpha_i \beta_j \right).
-\]
-Since \(\alpha_i\) is constant with respect to the inner sum over \(j\), it distributes:
-\[
-= \sum_{i=1}^n \sum_{j=1}^n \alpha_i \beta_j.
-\]
-Thus, the identity holds.
 \end{tcolorbox}
 
 \section{Summary}
-In these notes, we have:
 \begin{itemize}
     \item Reviewed monotonic functions and the concept of maximum margin in SVMs.
     \item Set up the primal optimization problem for SVMs.
-    \item Incorporated constraints using Lagrange multipliers to derive the dual problem.
-    \item Computed gradients with respect to the weight vector \(w\) and bias \(b\) to establish optimality conditions.
+    \item Incorporated constraints using Lagrange multipliers and derived the dual.
+    \item Computed gradients with respect to \( w \) and \( b \), then substituted them into the loss to obtain the dual objective.
 \end{itemize}
 
-This framework underpins many machine learning optimization techniques, including various gradient descent methods used in practice.
+This dual formulation is fundamental to kernel-based methods and efficient optimization in Support Vector Machines.
+
+\end{document}
+
+Footer
