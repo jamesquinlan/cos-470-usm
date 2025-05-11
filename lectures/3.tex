@@ -5,18 +5,6 @@
 %            : Sarah Lawrence  - Lecture 3 --> updated by Mohamed Noor
 %+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-\documentclass[12pt]{article}
-\usepackage{amsmath, amssymb}
-\usepackage{enumitem}
-\usepackage{tcolorbox}
-\usepackage{geometry}
-\usepackage{minted}
-\usepackage{tikz}
-\usepackage{hyperref}
-\usepackage{cite}
-\usepackage{xcolor}
-\geometry{margin=1in}
-
 % Define colors for consistency in figures
 \definecolor{pointcolor}{RGB}{0,0,0}
 \definecolor{highlightcolor}{RGB}{128,0,128}
@@ -24,19 +12,12 @@
 \definecolor{positiveclass}{RGB}{0,128,0}
 \definecolor{negativeclass}{RGB}{255,0,0}
 
-\begin{document}
-
-\title{Dimensionality, Distance, and K-Nearest Neighbors (KNN)}
-\author{University of Southern Maine}
-\date{Sarah Lawrence - Lecture 3}
-\maketitle
-
 \section*{Objectives}
-\begin{itemize}
-  \item Understand the concept of dimensionality and its implications in machine learning
-  \item Learn different distance metrics and their applications
-  \item Master the K-Nearest Neighbors algorithm for classification and regression
-\end{itemize}
+\begin{outline}
+  \1 Understand the concept of dimensionality and its implications in machine learning
+  \1 Learn different distance metrics and their applications
+  \1 Master the K-Nearest Neighbors algorithm for classification and regression
+\end{outline}
 
 \rule[0.0051in]{\textwidth}{0.00025in}
 % ----------------------------------------------------------------
@@ -47,14 +28,14 @@
 \vec{x} \in {\mathbb{R}}^p
 \]
 
-\begin{itemize}
-    \item $\vec{x}$ represents a vector (a data point with multiple attributes) 
-    \item $\in$ represents an element belonging to a particular set 
-    \item $\mathbb{R}$ represents the set of all real numbers 
-    \item $p$ represents the dimension of the vector space (number of features) 
-    \item \textbf{Meaning}: $\vec{x}$ is a vector with all elements being real numbers in $p$-dimensional space
-    \item \textbf{Terminology}: $p$ is also known as the Feature Space dimension, Number of Factors, or Number of Variables
-\end{itemize}
+\begin{outline}
+    \1 $\vec{x}$ represents a vector (a data point with multiple attributes) 
+    \1 $\in$ represents an element belonging to a particular set 
+    \1 $\mathbb{R}$ represents the set of all real numbers 
+    \1 $p$ represents the dimension of the vector space (number of features) 
+    \1 \textbf{Meaning}: $\vec{x}$ is a vector with all elements being real numbers in $p$-dimensional space
+    \1 \textbf{Terminology}: $p$ is also known as the Feature Space dimension, Number of Factors, or Number of Variables
+\end{outline}
 
 In practice, we typically represent a vector as a column vector:
 $\vec{x} = \begin{bmatrix}
@@ -63,20 +44,19 @@ x_2 \\
 \vdots \\
 x_p
 \end{bmatrix}$ 
-
-Where each $x_i$ represents a specific feature or attribute of our data point.
+where each $x_i$ represents a specific feature or attribute of our data point.
 
 \subsection{Distance Fundamentals}
 \[
     d(x,y)
 \]
 \textbf{Distance metric}: Measures the dissimilarity between two points $x$ and $y$. A proper distance metric must satisfy several properties:
-\begin{itemize}
-    \item Non-negativity: $d(x,y) \geq 0$
-    \item Identity of indiscernibles: $d(x,y) = 0$ if and only if $x = y$
-    \item Symmetry: $d(x,y) = d(y,x)$
-    \item Triangle inequality: $d(x,z) \leq d(x,y) + d(y,z)$
-\end{itemize}
+\begin{outline}
+    \1 Non-negativity: $d(x,y) \geq 0$
+    \1 Identity of indiscernibles: $d(x,y) = 0$ if and only if $x = y$
+    \1 Symmetry: $d(x,y) = d(y,x)$
+    \1 Triangle inequality: $d(x,z) \leq d(x,y) + d(y,z)$
+\end{outline}
 
 The most common distance metric is Euclidean distance:
 \[
@@ -91,12 +71,12 @@ When the number of dimensions is large, we encounter:
 \textbf{Meaning}: The vector $x$ has a high number of dimensions.
 
 \textbf{Challenges}: High dimensionality introduces several problems:
-\begin{itemize}
-    \item Data sparsity: Points become increasingly distant from each other
-    \item Computational complexity: More dimensions mean more calculations
-    \item Overfitting: Models can fit noise in high-dimensional spaces
-    \item The "Curse of Dimensionality": A collection of phenomena that make analysis more difficult as dimensions increase
-\end{itemize}
+\begin{outline}
+    \1 Data sparsity: Points become increasingly distant from each other
+    \1 Computational complexity: More dimensions mean more calculations
+    \1 Overfitting: Models can fit noise in high-dimensional spaces
+    \1 The ``Curse of Dimensionality": A collection of phenomena that make analysis more difficult as dimensions increase
+\end{outline}
 
 \section{Dimensionality in Detail}
 \subsection{Understanding the Space}
@@ -121,14 +101,14 @@ Two-dimensional vector space with uniformly distributed points:
 \end{center}
 
 \subsection{The Curse of Dimensionality}
-\textbf{Definition}: The "Curse of Dimensionality" refers to various phenomena that occur when analyzing data in high-dimensional spaces that do not occur in low-dimensional settings.
+\textbf{Definition}: The "Curse of Dimensionality" refers to various phenomena when analyzing data in high-dimensional spaces that do not occur in low-dimensional settings.
 
 \textbf{Key insight}: In a feature space with $p$ dimensions, $[0,1]^p$, filled with randomly distributed points, as $p$ increases:
-\begin{itemize}
-    \item The average distance between points increases
-    \item The average distance from any point to the nearest edge decreases
-    \item Volume concentrates near the edges and corners
-\end{itemize}
+\begin{outline}
+    \1 The average distance between points increases
+    \1 The average distance from any point to the nearest edge decreases
+    \1 Volume concentrates near the edges and corners
+\end{outline}
 
 This effect is illustrated below, where points tend to cluster near the edges in higher dimensions:
 
@@ -226,15 +206,15 @@ Visual representation of dimensionality reduction from 3D to 2D:
 \end{center}
 
 \subsection{The Box Size Problem}
-An important question in high-dimensional spaces: What is the size of the box $\ell$ that always contains exactly $k$ number of points?
+An essential question in high-dimensional spaces: What is the box size $\ell$ that always contains exactly $k$ points?
 
 Key parameters:
-\begin{itemize}
-    \item $k$ = fixed number $<$ $n$ (number of points we want inside the box)
-    \item $n$ = total number of samples (total points in the space)
-    \item $p$ = number of dimensions
-    \item Terminology: If $p$ is $\geq 4$ we call it a \textbf{hyper-cube}
-\end{itemize}
+\begin{outline}
+    \1 $k$ = fixed number $<$ $n$ (number of points we want inside the box)
+    \1 $n$ = total number of samples (total points in the space)
+    \1 $p$ = number of dimensions
+    \1 Terminology: If $p$ is $\geq 4$ we call it a \textbf{hyper-cube}
+\end{outline}
 
 \textbf{Example 1}: $k = 1$, $p = 1$, $n = 7$ points distributed on a line
 
@@ -555,15 +535,15 @@ This is illustrated below:
 \end{center}
 
 \subsection{Important Properties of Distance Metrics}
-Not all mathematical functions that measure "difference" qualify as proper distance metrics. For example:
+Not all mathematical functions that measure ``difference" qualify as proper distance metrics. For example:
 
 \textbf{Question}: Why is cosine distance not a true distance metric?
 
 \textbf{Answer}: Cosine distance violates several properties required for a true metric:
-\begin{itemize}
-    \item It doesn't satisfy the triangle inequality
-    \item It doesn't satisfy the identity of indiscernibles (two different vectors can have a cosine distance of 0 if they point in the same direction but have different magnitudes)
-\end{itemize}
+\begin{outline}
+    \1 It doesn't satisfy the triangle inequality
+    \1 It doesn't satisfy the identity of indiscernibles (two different vectors can have a cosine distance of 0 if they point in the same direction but have different magnitudes)
+\end{outline}
 
 \section{K-Nearest Neighbors (KNN) Algorithm}
 \subsection{Introduction to K-NN}
@@ -573,22 +553,22 @@ Not all mathematical functions that measure "difference" qualify as proper dista
 \textbf{Core idea}: Objects are classified based on the majority class among their k nearest neighbors or prediction is made based on the average value of their k nearest neighbors.
 
 \subsection{K-NN Algorithm Steps}
-\begin{enumerate}
-    \item Choose a value for K (the number of neighbors)
-    \item Calculate the distance between the query point and all training points
-    \item Sort the distances and determine the K nearest neighbors
-    \item For classification: use majority voting among the K neighbors
-    \item For regression: use the average (or weighted average) of the K neighbors
-\end{enumerate}
+\begin{outline}[enumerate]
+    \1 Choose a value for K (the number of neighbors)
+    \1 Calculate the distance between the query point and all training points
+    \1 Sort the distances and determine the K nearest neighbors
+    \1 For classification: use majority voting among the K neighbors
+    \1 For regression: use the average (or weighted average) of the K neighbors
+\end{outline}
 
 \subsection{Why K-NN Works}
 K-NN is effective because:
-\begin{itemize}
-    \item It makes minimal assumptions about the underlying data distribution (non-parametric)
-    \item It can adapt to complex decision boundaries
-    \item It works well when data points from the same class form cohesive clusters
-    \item By considering multiple neighbors, it reduces sensitivity to noise
-\end{itemize}
+\begin{outline}
+    \1 It makes minimal assumptions about the underlying data distribution (non-parametric)
+    \1 It can adapt to complex decision boundaries
+    \1 It works well when data points from the same class form cohesive clusters
+    \1 By considering multiple neighbors, it reduces sensitivity to noise
+\end{outline}
 
 In high-dimensional spaces, K-NN can still work effectively if the data points are not uniformly distributed, which helps mitigate the curse of dimensionality.
 
@@ -635,29 +615,29 @@ Parameters: $K = 3$ (we'll consider 3 nearest neighbors), $p = 2$ (2D space), $n
 \end{center}
 
 \textbf{Analysis}: The three nearest neighbors to the query point (?) are:
-\begin{itemize}
-    \item One positive point (+)
-    \item Two negative points (-)
-\end{itemize}
+\begin{outline}
+    \1 One positive point (+)
+    \1 Two negative points (-)
+\end{outline}
 
 \textbf{Prediction}: Since the majority (2 out of 3) of the nearest neighbors are negative, we classify the query point as negative.
 
 \subsection{Choosing K}
 The choice of K is crucial in K-NN:
-\begin{itemize}
-    \item Smaller K values: More sensitive to noise, but can capture fine-grained patterns
-    \item Larger K values: More robust to noise, but may miss local patterns
-    \item For classification tasks, K should be odd to avoid ties
-    \item Common practice: Try different K values using cross-validation
-\end{itemize}
+\begin{outline}
+    \1 Smaller K values: More sensitive to noise, but can capture fine-grained patterns
+    \1 Larger K values: More robust to noise, but may miss local patterns
+    \1 For classification tasks, K should be odd to avoid ties
+    \1 Common practice: Try different K values using cross-validation
+\end{outline}
 
 \subsection{Computational Complexity}
 K-NN has the following computational requirements:
-\begin{enumerate}
-    \item Calculation of distances between query point and all training points: $O(np)$ where $n$ is the number of training points and $p$ is the number of features
-    \item Sorting distances to find K nearest neighbors: $O(n \log n)$
-    \item Selecting K nearest neighbors: $O(K)$
-\end{enumerate}
+\begin{outine}[enumerate]
+    \1 Calculation of distances between query point and all training points: $O(np)$ where $n$ is the number of training points and $p$ is the number of features
+    \1 Sorting distances to find K nearest neighbors: $O(n \log n)$
+    \1 Selecting K nearest neighbors: $O(K)$
+\end{outline}
 
 Overall complexity: $O(np + n \log n + K) \approx O(np + n \log n)$ since typically $K \ll n$.
 
@@ -675,17 +655,15 @@ Missing data is a common problem in real-world datasets. Consider a vector with 
     \end{bmatrix}
 \] 
 
-There are several approaches to handle missing values:
-\begin{enumerate}
-    \item Delete records with missing values (simple but loses information)
-    \item Replace with mean or median of the feature (fast but ignores correlations)
-    \item Use K-NN imputation:
-        \begin{itemize}
-            \item Find K nearest neighbors based on non-missing features
-            \item Replace missing values with the average from these neighbors
-            \item This preserves relationships between features
-        \end{itemize}
-\end{enumerate}
+There are several approaches to handling missing values:
+\begin{outline}[enumerate]
+    \1 Delete records with missing values (simple but loses information)
+    \1 Replace with mean or median of the feature (fast but ignores correlations)
+    \1 Use K-NN imputation:
+            \2 Find K nearest neighbors based on non-missing features
+            \2 Replace missing values with the average from these neighbors
+            \2 This preserves relationships between features
+\end{outline}
 
 \textbf{Example}: If Maine is missing temperature data, taking the mean of all states would be biased by warm states like Texas and Arizona. Instead, K-NN would use temperatures from nearby northeastern states like New Hampshire and Vermont, providing a more accurate estimate.
 
@@ -695,12 +673,12 @@ Mathematically, we can define the K-NN setup as:
     \text{Data} = D = \{(x_i,y_i)\}^n_{i=1} \subset \mathbb{R}^p \times \{-1,1\}
 \]
 where:
-\begin{itemize}
-    \item $x_i \in \mathbb{R}^p$ are feature vectors
-    \item $y_i \in \{-1,1\}$ are binary class labels (can be extended to multi-class)
-    \item $n$ is the number of training examples
-    \item $p$ is the number of features
-\end{itemize}
+\begin{outline}
+    \1 $x_i \in \mathbb{R}^p$ are feature vectors
+    \1 $y_i \in \{-1,1\}$ are binary class labels (can be extended to multi-class)
+    \1 $n$ is the number of training examples
+    \1 $p$ is the number of features
+\end{outline}
 
 
 \end{document}
