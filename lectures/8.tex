@@ -10,7 +10,7 @@
     \1 The Perceptron 
     \1 Hyperplane
     \1 Perceptron Algorithm
-    \1 Definitions and Assumptions for model
+    \1 Definitions and Assumptions for the model
     \1 Classifier equation
     \1 Class Code
 \end{outline}
@@ -20,7 +20,7 @@
 
 \section{The Perceptron}
 
-A perceptron\cite{rosenblatt1958perceptron} is one of the simplest types of artificial neural network and is a foundational concept in machine learning. 
+A perceptron\cite{rosenblatt1958perceptron} is one of the simplest types of artificial neural networks and is a foundational concept in machine learning. 
 It is mainly used for binary classification tasks. Introduced by Frank Rosenblatt in 1958, it is one of the earliest neural network models designed to mimic the way the human brain processes information.
 
 The perceptron takes multiple inputs (features), each associated with a weight, and computes a weighted sum. 
@@ -132,7 +132,7 @@ When data points are linearly separable, there can be infinitely many hyperplane
     \item \textbf{1D }: The hyperplane is just a single point.
     \item \textbf{2D }: The hyperplane is a line that separates the 2D plane.
     \item \textbf{3D }: The hyperplane is a plane that separates the 3D space.
-    \item \textbf{Past 3D }: The hyperplane seperates the space in a way that can't be 3 dimensionally represented and is called a hyperplane.
+    \item \textbf{Past 3D }: The hyperplane separates the space in a way that can't be 3-dimensionally represented and is called a hyperplane.
 \end{itemize}
 
 \subsection{Mathematical Definition of a Hyperplane}
@@ -173,7 +173,7 @@ w'^T x' = 0
 \section{Assumptions for the Perceptron Model}
 
 \textbf{Data is Linearly Separable}
-For the perceptron model to work, the data must be \textbf{linearly separable}. This means that a linear hyperplane exists that can perfectly separate the data points belonging to different classes. 
+The data must be \textbf{linearly separable} for the perceptron model to work. This means that a linear hyperplane exists that can perfectly separate the data points belonging to different classes. 
 
 \subsection{Definition of Linear Separability}
 For a dataset with inputs \( x_i \) and corresponding labels \( y_i \), where \( y_i \in \{-1, 1\} \), the data is said to be linearly separable if there exists a hyperplane represented by the equation \( w^T x + b = 0 \) such that for each data point:
