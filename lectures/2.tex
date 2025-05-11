@@ -16,16 +16,16 @@
 % ----------------------------------------------------------------
 \section{Norms}
 
-A Norm is a function that takes a vector and maps it to a real number. It is closely tied to the concepts of absolute value and length. In relation to distance, $||x|| = ||x - 0|| = d(x,0)$. 
+A Norm is a function that maps a vector to a real number. It is closely tied to the concepts of absolute value and length. In relation to distance, $||x|| = ||x - 0|| = d(x,0)$. 
 
 The Norm function is $||\cdot|| : V \rightarrow \R^{+}$ such that:
 
-\begin{enumerate}
-	\item $||x|| \ge 0$    norms are greater than or equal to 0
-	\item $||x|| = 0 \text{ iff } x = 0$    norms are equal to 0 if and only if $x = 0$
-	\item $||Cx|| = |C| \cdot ||x|| \text{ where } C \in \R$
-	\item $||x+y|| \leq ||x|| + ||y||$
-\end{enumerate}
+\begin{outline}[enumerate]
+	\1 $||x|| \ge 0$    norms are greater than or equal to 0
+	\1 $||x|| = 0 \text{ iff } x = 0$    norms are equal to 0 if and only if $x = 0$
+	\1 $||Cx|| = |C| \cdot ||x|| \text{ where } C \in \R$
+	\1 $||x+y|| \leq ||x|| + ||y||$
+\end{outline}
 
 \begin{tikzpicture}[scale=0.5]
     \node[align=center, font=\bfseries] at (0,5) {Visual Representation of Spaces};
@@ -41,7 +41,7 @@ The Norm function is $||\cdot|| : V \rightarrow \R^{+}$ such that:
     \draw[->] (innerLabel) -- (-0.5,0);
 \end{tikzpicture}
 
-Consider the following example.
+Consider the following example:
 % ----------------------------------------------------------------
 \[
 d_H \left( \mathbf{{x}} = 
@@ -60,7 +60,7 @@ d_H \left( \mathbf{{x}} =
 \]
 % ----------------------------------------------------------------
 
-The Hamming Distance must satisfy all properties in order to be considered a norm function. Consider if $x$ and $y$ were scaled by an arbitrarily chosen constant $3$.
+The Hamming Distance must satisfy all properties to be considered a norm function. Consider if $x$ and $y$ were scaled by an arbitrarily chosen constant $3$.
 % ----------------------------------------------------------------
 \[
 d_H \left( \mathbf{{x}} = 
@@ -79,7 +79,7 @@ d_H \left( \mathbf{{x}} =
 \]
 % ----------------------------------------------------------------
 
-The Hamming Distance returns the number of elements that differ between two vectors. The result remains the same despite scaling the vectors. Therefore, the Hamming Distance is \textbf{not} a Norm function as it does not meet the third criteria.
+The Hamming Distance returns the number of elements that differ between two vectors. The result remains the same despite scaling the vectors. Therefore, the Hamming Distance is \textbf{not} a Norm function as it does not meet the third criterion.
 
 \centering
 $d_{H}(Cx,Cy) \ne C \cdot d_{H}(x,y)$
@@ -110,7 +110,7 @@ $$||x||_p = \sqrt{\sum_{i=1}^{n}|x_i|^p}$$
 
 \raggedright
 
-Chebyshev's norm also referred to as the $\infty$ norm or the max norm is denoted as $||x||_\infty$. This norm finds the component of the vector that is the farthest from 0 and returns that. The technical definition is as follows.
+Chebyshev's norm, also referred to as the $\infty$ norm or the max norm, is denoted as $||x||_\infty$. This norm finds the component of the vector that is the farthest from 0 and returns that. The technical definition is as follows.
 
 $$||x||_\infty = max(|x_1|, |x_2|, |x_3|, ... |x_p|)$$
 
@@ -161,13 +161,13 @@ All norms are equivalent but not equal. If $||x||_1$ is larger than $||y||_1$ th
 
 The inner product is $\langle\cdot,\cdot\rangle: V \times V \rightarrow\R$ such that:
 
-\begin{enumerate}
-	\item $\langle x,x \rangle \geq 0$
-	\item $\langle x,x \rangle = 0 \text{iff} x=0$
-	\item $\langle x,y \rangle = \langle y,x \rangle$
-	\item $\langle \alpha x+ \beta y,z \rangle = \alpha \langle x,z \rangle + \beta \langle y,z 			\rangle$,				$\alpha,\beta \in \R$,
+\begin{outline}[enumerate]
+	\1 $\langle x,x \rangle \geq 0$
+	\1 $\langle x,x \rangle = 0 \text{iff} x=0$
+	\1 $\langle x,y \rangle = \langle y,x \rangle$
+	\1 $\langle \alpha x+ \beta y,z \rangle = \alpha \langle x,z \rangle + \beta \langle y,z \rangle$, $\alpha,\beta \in \R$,
 			$x,y,z \in V$
-\end{enumerate}
+\end{outline}
 
 This is the basis of the neural networks. A few more aspects of the inner product are:
 
@@ -178,8 +178,7 @@ $\langle x,y \rangle = x^T y = \sum_{i=1}^{P}x_i y_i$
 \vspace{1em} 
 
 In the diagram below, the vector $x$ contains three input features, and each connection
-to the output node is weighted by a corresponding component of $y$. The output is the
-result of computing the dot product $\langle x, y \rangle$, and then adding a bias $b$. 
+to the output node is weighted by a corresponding component of $y$. The output results from computing the dot product $\langle x, y \rangle$, and then adding a bias $b$. 
 This is the fundamental operation of a single neuron in a neural network.
 
 
@@ -222,7 +221,7 @@ $||x|| = \sqrt{\langle x,x \rangle}$
 % ----------------------------------------------------------------
 \section{Projection}
 
-Projection is used in principle component analysis. We started by looking at the problem to show a situation in which projection might be necessary.
+Projection is used in principal component analysis. We started by looking at the problem to show a situation in which projection might be necessary.
 
 $Ax=b$
 
@@ -245,7 +244,9 @@ x_3
 12
 \end{pmatrix}$
 
-This problem has us trying to find the vector x. This problem may have no perfect solution. This is the sort of problem where we might use projection to solve it because projection is the best solution we can come up with.
+This problem has us trying to find the vector x. 
+This problem may have no perfect solution. 
+This is the sort of problem where we might use projection to solve it because projection is the best solution we can come up with.
 
 He then showed another problem.
 
