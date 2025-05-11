@@ -7,44 +7,48 @@
 %+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 \section*{Objectives}
-\begin{outline}
-    \1 Optimizers
-    \1 Batch Gradient Descent
-    \1 Momentum
-    \1 RMSProp
-\end{outline}
+\begin{itemize}
+  \item Review Batch, Stochastic, and Mini-Batch Gradient Descent
+  \item Explain Momentum and Nesterov Accelerated Gradient
+  \item Describe RMSProp and AdaGrad update rules
+  \item Introduce advanced optimizers: Adam and NAG
+\end{itemize}
 
 \rule[0.0051in]{\textwidth}{0.00025in}
 % ----------------------------------------------------------------
-\section{Optimizers}
+\section{Gradient Descent Variants}
+\subsection{Batch Gradient Descent}
+Batch Gradient Descent computes gradients over the entire dataset, which ensures accurate updates but incurs high computational cost:
+\[ 
+\nabla_w L(w)=\frac{1}{n}\sum_{i=1}^n\nabla_w \ell(w; x_i). 
+\]
+Its main drawbacks are slow convergence, high expense, and getting stuck in local minima.
+
+\textbf{Issues with Batch Gradient Descent}
 \begin{enumerate}
-    \item \textbf{Batch Gradient Descent}
+    \item Computationally expensive
     \begin{itemize}
-        \item In the past couple of classes we have been focusing primarily on Batch Gradient Descent and the math behind it.
+        \item Batch gradient descent computes the gradient at every single data point, which ensures points don't get passed over, but also requires a lot of needless computations
     \end{itemize} 
-    \textbf{Issues with Batch Gradient Descent}
-    \begin{enumerate}
-        \item Computationally expensive
-        \begin{itemize}
-            \item Batch gradient descent computes the gradient at every single data point, which ensures points don't get passed over, but also requires a lot of needless computations
-        \end{itemize} 
-        \item Notational issues
-        \[
-        loss = l(w,x)
-        \]
-        \[
-        L(w,x) = \frac{1}{n} \sum l(w,x)
-        \]
-        \[
-        \nabla_w L(w,x)=\nabla (\frac{1}{n} \sum l(w,x)) = \frac{1}{n} \sum \nabla l(w,x)
-        \]
-        The derivative of a sum should be equal to the sum of the derivatives
-        \item Slow convergence
-        \begin{itemize}
-            \item The steps get progressively smaller
-        \end{itemize}
-        \item Gets stuck on local minimums
-    \end{enumerate}
+    \item Notational issues
+    \[
+    loss = l(w,x)
+    \]
+    \[
+    L(w,x) = \frac{1}{n} \sum l(w,x)
+    \]
+    \[
+    \nabla_w L(w,x)=\nabla \Bigl(\frac{1}{n} \sum l(w,x)\Bigr) = \frac{1}{n} \sum \nabla l(w,x)
+    \]
+    The derivative of a sum should be equal to the sum of the derivatives
+    \item Slow convergence
+    \begin{itemize}
+        \item The steps get progressively smaller
+    \end{itemize}
+    \item Gets stuck on local minimums
+\end{enumerate}
+
+    
     \textbf{Related Types of Gradient Descent}
     \begin{enumerate}
         \item \textbf{Stochastic Gradient Descent (SGD)}

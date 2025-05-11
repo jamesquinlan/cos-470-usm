@@ -6,11 +6,11 @@
 %+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 \section*{Objectives}
 \begin{itemize}
-    \item Understand SVM margin and importance
-    \item Learn SVM objective function
-    \item Role of support vectors in SVM
-    \item Lagrange multipliers in SVM
-    \item Gradient descent optimization methods
+    \item Define the margin in Support Vector Machines and explain its importance.
+    \item Derive and interpret the SVM objective function.
+    \item Describe the role of support vectors in determining the optimal hyperplane.
+    \item Introduce Lagrange multipliers in the context of SVM constraints.
+    \item Review gradient-based optimization methods for training SVMs.
 \end{itemize}
 
 
@@ -65,7 +65,7 @@ where \( y_i \) is the class label (either 1 or -1), \( \mathbf{x}_i \) is the f
     0.5/0.5/-1,
     1/1/-1,
     1/1.5/-1,
-    1.6125/1.15/-1, % sv - NOTE: 1.6125 should be 1.5, however had to adjust to make figure look correct
+    1.6125/1.15/-1, % sv - NOTE: 1.6125 should be 1.5, however, had to adjust to make figure look correct
     0.5/2/-1,
     1.1667/2.5/-1, % sv -
     3.5/2/1, % sv +
@@ -153,7 +153,7 @@ L = \min \frac{1}{2} \| \mathbf{w} \|^2 - \sum \alpha_i \left( y_i (\mathbf{w}^T
 
 The key property of the Lagrange multipliers is that most of them turn out to be zero. This is because only the support vectors contribute to the weight vector w, making the corresponding multipliers for non-support vectors zero and minimizing their influence on the optimization process.
 
-When discussing the constraint, it's important to recognize that the sign of the expression \( y_i (\mathbf{w}^T \mathbf{x}_i + b) \) ensures that the data points are classified correctly. Specifically, if \( (\mathbf{w}^T \mathbf{x}_i + b) \) is positive and the label \( y_i \) is also positive, the product will be positive, which indicates that the point is correctly classified on the positive side of the margin. Similarly, if \( (\mathbf{w}^T \mathbf{x}_i + b) \) is negative and \( y_i \) is negative, the product will be positive, confirming the point is on the negative side of the margin. This relationship ensures that each data point is on the correct side of the margin boundary. The critical point here is that the margin must always be non-zero, i.e. there needs to be some "space" between the support vectors and the hyperplane to maintain proper separation between the two classes.
+When discussing the constraint, it's important to recognize that the sign of the expression \( y_i (\mathbf{w}^T \mathbf{x}_i + b) \) ensures that the data points are classified correctly. Specifically, if \( (\mathbf{w}^T \mathbf{x}_i + b) \) is positive and the label \( y_i \) is also positive, the product will be positive, which indicates that the point is correctly classified on the positive side of the margin. Similarly, if \( (\mathbf{w}^T \mathbf{x}_i + b) \) is negative and \( y_i \) is negative, the product will be positive, confirming the point is on the negative side of the margin. This relationship ensures that each data point is on the correct side of the margin boundary. The critical point here is that the margin must always be non-zero, i.e., there needs to be some "space" between the support vectors and the hyperplane to maintain proper separation between the two classes.
 
 
 \section{Partial Derivatives and Gradients}
@@ -215,13 +215,9 @@ In this lecture, we've covered several fundamental aspects of Support Vector Mac
 
 \begin{itemize}
     \item \textbf{Margins}: Support vectors represent data points that maintain the maximum distance between the hyperplane and their location. The primary objective of SVMs is to maximize this separation margin.
-    
     \item \textbf{Objective Function}: $\min \frac{1}{2} \|\mathbf{w}\|^2$ subject to $y_i(\mathbf{w}^T\mathbf{x}_i + b) \geq 1$ for all data points.
-    
     \item \textbf{Support Vectors}: The critical data points that lie exactly on the margin and solely determine the decision boundary.
-    
     \item \textbf{Lagrange Multipliers}: The optimization problem incorporates constraints through mathematical tools that define nonzero values only for support vectors.
-    
     \item \textbf{Gradient Descent}: Various optimization techniques are used to find the optimal weight vector that maximizes the margin.
 \end{itemize}
 
