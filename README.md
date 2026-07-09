@@ -4,7 +4,7 @@ Topics in Computer Science: Mathematics of Machine Learning
 ![Open Educational Resource](https://img.shields.io/badge/OER-Open%20Educational%20Resource-green)
 ![Mathematics for AI](https://img.shields.io/badge/Mathematics%20for-AI-purple)
 ![Course Materials](https://img.shields.io/badge/Content-Course%20Materials-blue)
-![LaTeX](https://img.shields.io/badge/LaTeX-Journal%20Template-008080?logo=latex) 
+![LaTeX](https://img.shields.io/badge/LaTeX-008080?logo=latex) 
 
 ## Topics - Student Scribed Notes
 1. [Vectors and distance metrics](https://github.com/jamesquinlan/cos-470-usm/blob/main/lectures/1.tex)
