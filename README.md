@@ -1,5 +1,5 @@
-# COS 470 University of Southern Maine
-Topics in Computer Science: Mathematics of Machine Learning
+# Mathematics of Machine Learning
+COS 470 Topics in Computer Science at the University of Machine Learning
 
 ![Open Educational Resource](https://img.shields.io/badge/OER-Open%20Educational%20Resource-green)
 ![Mathematics for AI](https://img.shields.io/badge/Mathematics%20for-AI-purple)
