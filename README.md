@@ -1,6 +1,17 @@
 # COS 470 University of Southern Maine
 Topics in Computer Science: Mathematics of Machine Learning
 
+![Open Educational Resource](https://img.shields.io/badge/OER-Open%20Educational%20Resource-green)
+![Jupyter Notebook](https://img.shields.io/badge/Made%20with-Jupyter-orange?logo=jupyter)
+
+
+
+![IEEE 754](https://img.shields.io/badge/IEEE754-FP16%20FP32%20FP64-blue)
+![Posits](https://img.shields.io/badge/Posits-supported-success)
+![Takum](https://img.shields.io/badge/Takum-supported-success)
+![bfloat16](https://img.shields.io/badge/bfloat16-supported-success)
+![OFP8](https://img.shields.io/badge/OFP8-supported-success)
+
 
 ## Topics - Student Scribed Notes
 1. [Vectors and distance metrics](https://github.com/jamesquinlan/cos-470-usm/blob/main/lectures/1.tex)
