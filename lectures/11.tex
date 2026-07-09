@@ -25,7 +25,8 @@
     \[
     x_1 \leq x_2, \quad \text{then} \quad f(x_1) \leq f(x_2).
     \]
-    \1 \textbf{Takeaway:} A monotonic function preserves the order of inputs — as one input increases, the output either increases or stays the same (non-decreasing), or decreases or stays the same (non-increasing).
+    \1 \textbf{Takeaway:} A monotonic function preserves the order of inputs — as one input increases, the output either increases or stays the same (non-decreasing), 
+    or decreases or stays the same (non-increasing).
 \end{outline}
 
 \subsection{Maximum Margin in SVMs}
@@ -60,7 +61,9 @@
     \1 \textbf{Purpose:} Incorporate inequality constraints into the optimization problem using Lagrange multipliers.
     \1 \textbf{Why move to the dual?}
 
-    Solving the primal problem directly can be challenging when the number of constraints is large. The dual problem transforms the constraints into a form that allows us to apply kernel methods and often simplifies computation. It also allows the use of inner products \( x_i^T x_j \), which is especially useful in high-dimensional feature spaces.
+    Solving the primal problem directly can be challenging when the number of constraints is large. 
+    The dual problem transforms the constraints into a form that allows us to apply kernel methods 
+    and often simplifies computation. It also allows the use of inner products \( x_i^T x_j \), which is especially useful in high-dimensional feature spaces.
 
     \1 \textbf{Lagrangian Formulation:}
     \[
