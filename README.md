@@ -2,7 +2,7 @@
 Topics in Computer Science: Mathematics of Machine Learning
 
 ![Open Educational Resource](https://img.shields.io/badge/OER-Open%20Educational%20Resource-green)
-![Math for AI](https://img.shields.io/badge/Mathematics-4-AI-purple)
+![Mathematics for AI](https://img.shields.io/badge/Mathematics%20for-AI-purple)
 ![Course Materials](https://img.shields.io/badge/Content-Course%20Materials-blue)
 ![Open Source](https://img.shields.io/badge/Open-Source-green)
  
