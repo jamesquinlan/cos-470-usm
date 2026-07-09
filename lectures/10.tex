@@ -20,9 +20,11 @@
 \section{Review}
 \subsection{SVM Margins}
 
-In the context of Support Vector Machines (SVMs), the margin refers to the distance between the hyperplane and the closest data points of each class. These closest data points are called \textit{support vectors}, and they are critical in determining the optimal decision boundary.
+In the context of Support Vector Machines (SVMs), the margin refers to the distance between the hyperplane and the closest data points of each class. 
+These closest data points are called \textit{support vectors}, and they are critical in determining the optimal decision boundary.
 
-For a binary classification problem, the goal of an SVM is to find the hyperplane that maximizes this margin, ensuring the greatest possible separation between the two classes. A larger margin typically leads to better generalization and reduced risk of overfitting, as it implies a more confident separation of the classes.
+For a binary classification problem, the goal of an SVM is to find the hyperplane that maximizes this margin, ensuring the greatest possible separation between the two classes. 
+A larger margin typically leads to better generalization and reduced risk of overfitting, as it implies a more confident separation of the classes.
 
 \subsection{Objective Function}
 
@@ -31,9 +33,11 @@ Mathematically, the margin can be expressed as:
 \text{Margin} = \frac{1}{\| \mathbf{w} \|}
 \]
 
-where \( \mathbf{w} \) is the weight vector normal to the hyperplane. The margin is inversely proportional to the magnitude of \( \mathbf{w} \), which means that to maximize the margin, we need to minimize \( \| \mathbf{w} \| \). This is achieved by finding the hyperplane that satisfies the optimal separation between the two classes while keeping the margin as large as possible. 
+where \( \mathbf{w} \) is the weight vector normal to the hyperplane. The margin is inversely proportional to the magnitude of \( \mathbf{w} \), which means that to maximize the margin, 
+we need to minimize \( \| \mathbf{w} \| \). This is achieved by finding the hyperplane that satisfies the optimal separation between the two classes while keeping the margin as large as possible. 
 
-Note that while this is not the same as minimizing the vector \( \mathbf{w} \), the \textit{argmax} of \( \frac{1}{\| \mathbf{w} \|} \) is the same as the \textit{argmin} of \( \| \mathbf{w} \| \). For instance, if you have:
+Note that while this is not the same as minimizing the vector \( \mathbf{w} \), the \textit{argmax} of \( \frac{1}{\| \mathbf{w} \|} \) is the same as the \textit{argmin} of \( \| \mathbf{w} \| \). 
+For instance, if you have:
 
 \[
 \max(\frac{1}{10}, \frac{1}{20}, \frac{1}{30}), \quad \min(10, 20, 30)
@@ -65,7 +69,7 @@ where \( y_i \) is the class label (either 1 or -1), \( \mathbf{x}_i \) is the f
     0.5/0.5/-1,
     1/1/-1,
     1/1.5/-1,
-    1.6125/1.15/-1, % sv - NOTE: 1.6125 should be 1.5, however had to adjust to make figure look correct
+    1.6125/1.15/-1, % sv - NOTE: 1.6125 should be 1.5; however had to adjust to make the figure look correct
     0.5/2/-1,
     1.1667/2.5/-1, % sv -
     3.5/2/1, % sv +
@@ -117,7 +121,9 @@ The support vectors are the points that lie closest to the margin boundaries. Th
 \]
 where \( \mathbf{x}_1, \mathbf{x}_2, \dots, \mathbf{x}_k \) are the support vectors, and \( c_1, c_2, \dots, c_k \) are coefficients associated with each support vector. 
 
-Additionally, the constant coefficients \( c_1, c_2, \dots, c_k \) represent the relative importance of each support vector in the formation of the hyperplane. For example, if a support vector has a larger \( c_k \), it has a greater influence on the orientation of the hyperplane. On the other hand, say for instance that a support vector is an outlier, meaning it is far away from the decision boundary, then it follows that its corresponding \( c_k \) value may be small and have less influence on the orientation of the hyperplane.
+Additionally, the constant coefficients \( c_1, c_2, \dots, c_k \) represent the relative importance of each support vector in the formation of the hyperplane. 
+For example, if a support vector has a larger \( c_k \), it has a greater influence on the orientation of the hyperplane. On the other hand, say for instance that a support vector is an outlier, 
+meaning it is far away from the decision boundary, then it follows that its corresponding \( c_k \) value may be small and have less influence on the orientation of the hyperplane.
 
 \section{Lagrange Multipliers and Optimization Constraints}
 
@@ -133,7 +139,8 @@ First, subtract 1 from both sides:
 y_i (\mathbf{w}^T \mathbf{x}_i + b) - 1 \geq 0
 \]
 
-Next, introduce a Lagrange multiplier \( \alpha_i \) for each data point \( x_i \). The Lagrange multiplier enforces the constraint during the optimization process, ensuring that the constraint is met for the support vectors. Thus, we write the Lagrange term as:
+Next, introduce a Lagrange multiplier \( \alpha_i \) for each data point \( x_i \). The Lagrange multiplier enforces the constraint during the optimization process, 
+ensuring that the constraint is met for the support vectors. Thus, we write the Lagrange term as:
 
 \[
 \alpha_i \left( y_i (\mathbf{w}^T \mathbf{x}_i + b) - 1 \right) = 0
@@ -151,16 +158,23 @@ To incorporate the constraint using Lagrange multipliers, we combine the objecti
 L = \min \frac{1}{2} \| \mathbf{w} \|^2 - \sum \alpha_i \left( y_i (\mathbf{w}^T \mathbf{x}_i + b) - 1 \right)
 \]
 
-The key property of the Lagrange multipliers is that most of them turn out to be zero. This is because only the support vectors contribute to the weight vector w, making the corresponding multipliers for non-support vectors zero and minimizing their influence on the optimization process.
+The key property of the Lagrange multipliers is that most of them turn out to be zero. This is because only the support vectors contribute to the weight vector w, 
+making the corresponding multipliers for non-support vectors zero and minimizing their influence on the optimization process.
 
-When discussing the constraint, it's important to recognize that the sign of the expression \( y_i (\mathbf{w}^T \mathbf{x}_i + b) \) ensures that the data points are classified correctly. Specifically, if \( (\mathbf{w}^T \mathbf{x}_i + b) \) is positive and the label \( y_i \) is also positive, the product will be positive, which indicates that the point is correctly classified on the positive side of the margin. Similarly, if \( (\mathbf{w}^T \mathbf{x}_i + b) \) is negative and \( y_i \) is negative, the product will be positive, confirming the point is on the negative side of the margin. This relationship ensures that each data point is on the correct side of the margin boundary. The critical point here is that the margin must always be non-zero, i.e. there needs to be some "space" between the support vectors and the hyperplane to maintain proper separation between the two classes.
+When discussing the constraint, it's important to recognize that the sign of the expression \( y_i (\mathbf{w}^T \mathbf{x}_i + b) \) ensures that the data points are classified correctly. 
+Specifically, if \( (\mathbf{w}^T \mathbf{x}_i + b) \) is positive and the label \( y_i \) is also positive, the product will be positive, which indicates that the point is correctly classified 
+on the positive side of the margin. Similarly, if \( (\mathbf{w}^T \mathbf{x}_i + b) \) is negative and \( y_i \) is negative, the product will be positive, confirming the point is on the negative 
+side of the margin. This relationship ensures that each data point is on the correct side of the margin boundary. The critical point here is that the margin must always be non-zero, 
+i.e., there needs to be some "space" between the support vectors and the hyperplane to maintain proper separation between the two classes.
 
 
 \section{Partial Derivatives and Gradients}
 
 When tackling an optimization problem, the typical approach is to minimize a function. This involves computing the derivative of the objective function, setting it equal to zero, and solving for the variable (in this case, \( \mathbf{w} \)). However, in the presence of constraints, such as \( y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 \), we cannot directly apply this procedure. 
 
-To work with constraints, we adjust our approach. Instead of directly solving for \( \mathbf{w} \) using just the objective function, we modify the problem to include both the objective function and the constraints. This results in a new equation where the constraint is "bundled" into the objective, allowing us to proceed with the minimization. The equation becomes:
+To work with constraints, we adjust our approach. Instead of directly solving for \( \mathbf{w} \) using just the objective function, we modify the problem to include both the objective function 
+and the constraints. This results in a new equation where the constraint is "bundled" into the objective, allowing us to proceed with the minimization. 
+The equation becomes:
 
 \[
 L = \min \frac{1}{2} \| \mathbf{w} \|^2 - \sum \alpha_i \left( y_i (\mathbf{w}^T \mathbf{x}_i + b) - 1 \right)
@@ -184,7 +198,8 @@ In machine learning, the weight vector \( \mathbf{w} \) can contain thousands or
 \end{bmatrix}
 \]
 
-Here is an example to see how to calculate partial derivatives by differentiating with respect to one variable while treating the other variables as constants. This helps us understand how the function changes in each direction. For instance, for the simple 3D parabola \( f(x, y) = x^2 + y^2 \), the partial derivatives are computed by holding one variable constant at a time. Specifically, when taking the partial derivative with respect to \( x \), we treat \( y \) as a constant, and when taking the partial derivative with respect to \( y \), we treat \( x \) as a constant, then take the derivative as usual:
+Here is an example to see how to calculate partial derivatives by differentiating with respect to one variable while treating the other variables as constants. 
+This helps us understand how the function changes in each direction. For instance, for the simple 3D parabola \( f(x, y) = x^2 + y^2 \), the partial derivatives are computed by holding one variable constant at a time. Specifically, when taking the partial derivative with respect to \( x \), we treat \( y \) as a constant, and when taking the partial derivative with respect to \( y \), we treat \( x \) as a constant, then take the derivative as usual:
 \[
 \frac{\partial f}{\partial x} = 2x, \quad \frac{\partial f}{\partial y} = 2y
 \]
