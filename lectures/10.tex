@@ -162,18 +162,14 @@ The key property of the Lagrange multipliers is that most of them turn out to be
 making the corresponding multipliers for non-support vectors zero and minimizing their influence on the optimization process.
 
 When discussing the constraint, it's important to recognize that the sign of the expression \( y_i (\mathbf{w}^T \mathbf{x}_i + b) \) ensures that the data points are classified correctly. 
-Specifically, if \( (\mathbf{w}^T \mathbf{x}_i + b) \) is positive and the label \( y_i \) is also positive, the product will be positive, which indicates that the point is correctly classified 
-on the positive side of the margin. Similarly, if \( (\mathbf{w}^T \mathbf{x}_i + b) \) is negative and \( y_i \) is negative, the product will be positive, confirming the point is on the negative 
-side of the margin. This relationship ensures that each data point is on the correct side of the margin boundary. The critical point here is that the margin must always be non-zero, 
-i.e., there needs to be some "space" between the support vectors and the hyperplane to maintain proper separation between the two classes.
+Specifically, if \( (\mathbf{w}^T \mathbf{x}_i + b) \) is positive and the label \( y_i \) is also positive, the product will be positive, which indicates that the point is correctly classified on the positive side of the margin. Similarly, if \( (\mathbf{w}^T \mathbf{x}_i + b) \) is negative and \( y_i \) is negative, the product will be positive, confirming the point is on the negative side of the margin. This relationship ensures that each data point is on the correct side of the margin boundary. The critical point here is that the margin must always be non-zero, i.e., there needs to be some ``space" between the support vectors and the hyperplane to maintain proper separation between the two classes.
 
 
 \section{Partial Derivatives and Gradients}
 
 When tackling an optimization problem, the typical approach is to minimize a function. This involves computing the derivative of the objective function, setting it equal to zero, and solving for the variable (in this case, \( \mathbf{w} \)). However, in the presence of constraints, such as \( y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 \), we cannot directly apply this procedure. 
 
-To work with constraints, we adjust our approach. Instead of directly solving for \( \mathbf{w} \) using just the objective function, we modify the problem to include both the objective function 
-and the constraints. This results in a new equation where the constraint is "bundled" into the objective, allowing us to proceed with the minimization. 
+To work with constraints, we adjust our approach. Instead of directly solving for \( \mathbf{w} \) using just the objective function, we modify the problem to include both the objective function and the constraints. This results in a new equation where the constraint is ``bundled" into the objective, allowing us to proceed with the minimization. 
 The equation becomes:
 
 \[
