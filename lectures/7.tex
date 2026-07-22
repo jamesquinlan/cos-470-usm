@@ -134,14 +134,14 @@ If the hyperplane is the set of all points such that $w^\perp x+b=0$, or, the se
 \end{itemize}
 
 \section{Introduction to SVM}
-As the previous section shows, an 'optimal' hyperplane maximizes the margin between the closest feature vector and the plane. To better maximize this margin, we'll introduce a new machine learning algorithm called the \textit{Support Vector Machine}\cite{scholkopf2002learning}\cite{vapnik1998statistical}, or \textit{SVM} for short.
+As the previous section shows, an `optimal' hyperplane maximizes the margin between the closest feature vector and the plane. To better maximize this margin, we'll introduce a new machine learning algorithm called the \textit{Support Vector Machine}\cite{scholkopf2002learning}\cite{vapnik1998statistical}, or \textit{SVM} for short.
 
-The SVM is what is known as a \textit{maximum margin classifier}, which means that it is \textit{guaranteed} to find the maximum margin separating hyperplane, which is what we have decided to define as the most 'optimal' hyperplane for our purposes.
+The SVM is what is known as a \textit{maximum margin classifier}, which means that it is \textit{guaranteed} to find the maximum margin separating hyperplane, which is what we have decided to define as the most `optimal' hyperplane for our purposes.
 
 \subsection{SVM Prerequisites}
 Before we delve into the specifics of the SVM algorithm, we must define an important linear algebra operation: \textit{projection}.
 
-In the most literal sense, 'projecting' one vector onto another gives us the magnitude of the first vector in the direction of another, as if you set the first above the second in the same plane and shined a light over it- the projection is its 'shadow' (like the example below).
+In the most literal sense, `projecting' one vector onto another gives us the magnitude of the first vector in the direction of another, as if you set the first above the second in the same plane and shined a light over it- the projection is its 'shadow' (like the example below).
 
 \begin{tikzpicture}
 	\draw[->] (0, 0) -- (3, 0);
