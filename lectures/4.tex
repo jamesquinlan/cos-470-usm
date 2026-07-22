@@ -181,7 +181,7 @@ x_i^{\prime} = \frac{x_i - \bar{x}}{\sigma} = Z
     \item $Z$: $Z$-score
 \end{itemize}
 
-Where:
+where:
 
 \begin{align*}
 x_i &= \begin{bmatrix}
@@ -249,19 +249,15 @@ while the dashed lines represent a number in between $2$ and $10$ that connects 
 \begin{outline}
 
     \1  Given a dataset: $D=\{x_i,y_i\}$
-
     \1  Compute the distance from new point $x_t$ that is not in the set $D$, to every $x_i$
-
     \1  Sort distances
-
-    \1  Select first $K$ of the sorted distances
-
+    \1  Select first $k$ of the sorted distances
     \1  If \textbf{Classification} problem, take the mode of labels $y_1, y_2, y_3 ... y_k$, else, for \textbf{Regression}
         problem, take the mean of labels $y \in \mathbb{R} \rightarrow y_1, y_2, y_3 ... y_k$ (as an alternative, using median could be
         ideal in some cases since it ignore outliers)
-
 \end{outline}
 
+% clean this.  also, k vs. K (be consistent)
 $x_t$ is a test point\\
 
 $K \subseteq D$ \\
