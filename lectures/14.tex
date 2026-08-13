@@ -67,6 +67,7 @@ Where $L(w)$ is the loss function and $\gamma$ is the learning rate (hyperparame
 \[
     w_{t+1} = w_t - \gamma \nabla L(w_t) + \text{(past gradients)}
 \]
+\\ If you have multiple past gradients you may want to have a decaying weights or "moving averages"
 
 \textbf{Actual update equations:}
 \[
@@ -81,7 +82,7 @@ Where $L(w)$ is the loss function and $\gamma$ is the learning rate (hyperparame
 
 \textbf{Potential Issue:} May overshoot the minimum due to accumulated momentum.
 
-\textbf{Performance Metric:} \fbox{Count number of iterations until convergence}
+\textbf{Performance Metric:} \fbox{Count number of iterations until convergence} 
 
 \section{Nesterov Accelerated Gradient (NAG)}
 
