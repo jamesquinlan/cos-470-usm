@@ -100,7 +100,7 @@ Where $L(w)$ is the loss function and $\gamma$ is the learning rate (hyperparame
 \underline{Intuitive: } $w_{t+1}=w_t-\gamma \nabla L(w_t) + \text{(past gradients)}$\\
 \underline{Actual: }\boxed{v_0=0}\\ \boxed{v_{t+1}=\xi v_t + \nabla L(w_t)}
 \boxed{w_{t+1}=w_t-\gamma v_{t+1}}\\
-\underline{issue: } can move past desired point because of momentum of past gradients\\
+\underline{issue: } can move past the desired point because of momentum from past gradients\\
 \underline{evaluating performance: } \fbox{Count number of iterations}\\
 
 \section{Gradient-Based Nesterov}
